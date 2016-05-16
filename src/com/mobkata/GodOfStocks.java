@@ -8,10 +8,17 @@ import static java.util.Arrays.asList;
 
 public class GodOfStocks {
     public List<List<StockOperation>> operationsForMaxProfit(List<Integer> prices) {
-        final List<StockOperation> stockOperations = new ArrayList<>();
+        final List<List<StockOperation>> allStockOperationsSeries = new ArrayList<>();
 
-        prices.stream().forEach( price -> stockOperations.add(PASS));
+        if (prices.size() == 1)
+            allStockOperationsSeries.add(asList(PASS));
 
-        return asList(stockOperations);
+        if (prices.size() == 2) {
+            allStockOperationsSeries.add(asList(PASS, PASS));
+            if (prices.get(0) == prices.get(1))
+                allStockOperationsSeries.add(asList(BUY, SELL));
+        }
+
+        return allStockOperationsSeries;
     }
 }

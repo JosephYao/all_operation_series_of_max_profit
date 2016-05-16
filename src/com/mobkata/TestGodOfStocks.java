@@ -17,9 +17,8 @@ public class TestGodOfStocks {
     @Test
     public void no_operation_needed_when_no_stock_price() {
         assertStockOperationEquals(
-                asList(
-                        asList()
-                ), asList());
+                asList(),
+                asList());
     }
 
     @Test
@@ -38,9 +37,16 @@ public class TestGodOfStocks {
                 asList(HIGHER_PRICE, LOWER_PRICE));
     }
 
-//    @Test
-//    public void buy_sell_and_pass_pass_both_can_get_0_profit_when_two_price_identical() {
-//    }
+    @Test
+    public void buy_sell_and_pass_pass_both_can_get_0_profit_when_two_price_identical() {
+        assertStockOperationEquals(
+                asList(
+                        asList(PASS, PASS),
+                        asList(BUY, SELL)
+                ),
+                asList(LOWER_PRICE, LOWER_PRICE)
+        );
+    }
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         assertEquals(expected, godOfStocks.operationsForMaxProfit(prices));
