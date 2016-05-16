@@ -1,18 +1,25 @@
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class TestGodOfStocks {
 
+    GodOfStocks godOfStocks = new GodOfStocks();
+
     @Test
     public void no_operation_needed_when_no_stock_price() {
-        GodOfStocks godOfStocks = new GodOfStocks();
+        assertStockOperationEquals(Arrays.<StockOperation>asList(), Arrays.<Integer>asList());
+    }
 
-        List<StockOperation> operations = godOfStocks.operationsForMaxProfit(new ArrayList<Integer>());
+    @Test
+    public void only_pass_operation_can_get_0_profit_when_only_one_stock_price() {
+        assertStockOperationEquals(Arrays.asList(StockOperation.PASS), Arrays.asList(1));
+    }
 
-        assertEquals(new ArrayList<StockOperation>(), operations);
+    private void assertStockOperationEquals(List<StockOperation> expected, List<Integer> prices) {
+        assertEquals(expected, godOfStocks.operationsForMaxProfit(prices));
     }
 }
