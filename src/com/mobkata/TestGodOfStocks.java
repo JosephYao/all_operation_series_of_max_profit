@@ -7,6 +7,8 @@ import java.util.List;
 import static com.mobkata.StockOperation.*;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.hasItem;
 
 public class TestGodOfStocks {
 
@@ -48,7 +50,20 @@ public class TestGodOfStocks {
         );
     }
 
+    @Test
+    public void buy_sell_can_get_max_profit_when_first_price_lower_than_higher_price() {
+        assertStockOperationEquals(
+                asList(
+                        asList(BUY, SELL)
+                ),
+                asList(LOWER_PRICE, HIGHER_PRICE)
+        );
+    }
+
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
-        assertEquals(expected, godOfStocks.operationsForMaxProfit(prices));
+        List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);
+        assertEquals(expected.size(), actual.size());
+        expected.stream().forEach(
+                series -> assertThat(actual, hasItem(series)));
     }
 }

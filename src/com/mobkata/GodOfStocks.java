@@ -12,17 +12,38 @@ public class GodOfStocks {
         if (prices.size() == 0)
             return allStockOperationsSeries;
 
-        allStockOperationsSeries.add(createStockOperationsSeries(
-                prices.size() - 1, new ArrayList<StockOperation>() {{
-                    add(PASS);
-                }}
-        ));
-        if (prices.size() == 2 && prices.get(0) == prices.get(1))
+        if (prices.size() == 1) {
+            allStockOperationsSeries.add(new ArrayList<StockOperation>(){{
+                add(PASS);
+            }});
+        }
+
+        if (prices.size() == 2 && prices.get(0) > prices.get(1))
+            allStockOperationsSeries.add(createStockOperationsSeries(
+                    prices.size() - 1, new ArrayList<StockOperation>() {{
+                        add(PASS);
+                    }}
+            ));
+
+        if (prices.size() == 2 && prices.get(0) == prices.get(1)) {
             allStockOperationsSeries.add(createStockOperationsSeries(
                     prices.size() - 1, new ArrayList<StockOperation>() {{
                         add(BUY);
                     }}
             ));
+            allStockOperationsSeries.add(createStockOperationsSeries(
+                    prices.size() - 1, new ArrayList<StockOperation>() {{
+                        add(PASS);
+                    }}
+            ));
+        }
+
+        if (prices.size() == 2 && prices.get(0) < prices.get(1))
+        allStockOperationsSeries.add(createStockOperationsSeries(
+                prices.size() - 1, new ArrayList<StockOperation>() {{
+                    add(BUY);
+                }}
+        ));
 
         return allStockOperationsSeries;
     }
