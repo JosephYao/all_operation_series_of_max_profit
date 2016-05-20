@@ -1,5 +1,6 @@
 package com.mobkata;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.mobkata.StockOperation.PASS;
@@ -43,11 +44,15 @@ public class StockOperationSeries {
             return this;
 
         if (lastOperationOf() == PASS)
-            operations.add(PASS);
+            return new StockOperationSeries(new ArrayList<StockOperation>() {{
+                addAll(operations);
+                add(PASS);
+            }}, prices);
         else
-            operations.add(SELL);
-
-        return this;
+            return new StockOperationSeries(new ArrayList<StockOperation>() {{
+                addAll(operations);
+                add(SELL);
+            }}, prices);
     }
 
     private StockOperation lastOperationOf() {

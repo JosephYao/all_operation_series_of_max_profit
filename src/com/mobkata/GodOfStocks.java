@@ -1,6 +1,7 @@
 package com.mobkata;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.mobkata.StockOperation.*;
@@ -26,13 +27,9 @@ public class GodOfStocks {
             return allStockOperationsSeries;
 
         allStockOperationsSeries.add(
-                new StockOperationSeries(new ArrayList<StockOperation>() {{
-                    add(PASS);
-                }}, prices).createCompleteSeries());
+                new StockOperationSeries(Arrays.asList(PASS), prices).createCompleteSeries());
         allStockOperationsSeries.add(
-                new StockOperationSeries(new ArrayList<StockOperation>() {{
-                    add(BUY);
-                }}, prices).createCompleteSeries());
+                new StockOperationSeries(Arrays.asList(BUY), prices).createCompleteSeries());
 
         return allStockOperationsSeries;
     }
