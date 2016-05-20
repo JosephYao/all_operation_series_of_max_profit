@@ -8,7 +8,7 @@ import static java.util.stream.Collectors.toList;
 
 public class GodOfStocks {
     public List<List<StockOperation>> operationsForMaxProfit(List<Integer> prices) {
-        List<StockOperationSeries> allStockOperationsSeries = allStockOperationSeries(prices.size(), prices);
+        List<StockOperationSeries> allStockOperationsSeries = allStockOperationSeries(prices);
 
         int maxProfit = allStockOperationsSeries.stream().
                 mapToInt(series -> series.sum()).max().orElse(0);
@@ -19,18 +19,18 @@ public class GodOfStocks {
                 collect(toList());
     }
 
-    private List<StockOperationSeries> allStockOperationSeries(int numberOfStockPrices, List<Integer> prices) {
+    private List<StockOperationSeries> allStockOperationSeries(List<Integer> prices) {
         final List<StockOperationSeries> allStockOperationsSeries = new ArrayList<>();
 
-        if (numberOfStockPrices == 0)
+        if (prices.size() == 0)
             return allStockOperationsSeries;
 
         allStockOperationsSeries.add(
-                createStockOperationsSeries(numberOfStockPrices - 1, new ArrayList<StockOperation>(){{
+                createStockOperationsSeries(prices.size() - 1, new ArrayList<StockOperation>(){{
                     add(PASS);
                 }}, prices));
         allStockOperationsSeries.add(
-                createStockOperationsSeries(numberOfStockPrices - 1, new ArrayList<StockOperation>(){{
+                createStockOperationsSeries(prices.size() - 1, new ArrayList<StockOperation>(){{
                     add(BUY);
                 }}, prices));
 
