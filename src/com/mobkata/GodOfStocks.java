@@ -8,18 +8,19 @@ import static java.util.stream.Collectors.toList;
 
 public class GodOfStocks {
     public List<List<StockOperation>> operationsForMaxProfit(List<Integer> prices) {
-        List<List<StockOperation>> allStockOperationsSeries = allStockOperationSeries(prices.size());
+        List<StockOperationSeries> allStockOperationsSeries = allStockOperationSeries(prices.size(), prices);
 
         int maxProfit = allStockOperationsSeries.stream().
-                mapToInt(series -> sumOf(series, prices)).max().orElse(0);
+                mapToInt(series -> series.sum()).max().orElse(0);
 
         return allStockOperationsSeries.stream().
-                filter(series -> sumOf(series, prices) == maxProfit).
+                filter(series -> series.sum() == maxProfit).
+                map(series -> series.operations()).
                 collect(toList());
     }
 
-    private List<List<StockOperation>> allStockOperationSeries(int numberOfStockPrices) {
-        final List<List<StockOperation>> allStockOperationsSeries = new ArrayList<>();
+    private List<StockOperationSeries> allStockOperationSeries(int numberOfStockPrices, List<Integer> prices) {
+        final List<StockOperationSeries> allStockOperationsSeries = new ArrayList<>();
 
         if (numberOfStockPrices == 0)
             return allStockOperationsSeries;
@@ -27,44 +28,25 @@ public class GodOfStocks {
         allStockOperationsSeries.add(
                 createStockOperationsSeries(numberOfStockPrices - 1, new ArrayList<StockOperation>(){{
                     add(PASS);
-                }}));
+                }}, prices));
         allStockOperationsSeries.add(
                 createStockOperationsSeries(numberOfStockPrices - 1, new ArrayList<StockOperation>(){{
                     add(BUY);
-                }}));
+                }}, prices));
 
         return allStockOperationsSeries;
     }
 
-    private Integer sumOf(List<StockOperation> series, List<Integer> prices) {
-        int sum = 0;
-
-        for (int i = 0; i < prices.size(); i++) {
-            switch (series.get(i)) {
-                case PASS:
-                    break;
-                case BUY:
-                    sum -= prices.get(i);
-                    break;
-                case SELL:
-                    sum += prices.get(i);
-                    break;
-            }
-        }
-
-        return sum;
-    }
-
-    private List<StockOperation> createStockOperationsSeries(int numberOfPrices, List<StockOperation> currentSeries) {
+    private StockOperationSeries createStockOperationsSeries(int numberOfPrices, List<StockOperation> currentSeries, List<Integer> prices) {
         if (numberOfPrices == 0)
-            return currentSeries;
+            return new StockOperationSeries(currentSeries, prices);
 
         if (lastOperationOf(currentSeries) == PASS)
             currentSeries.add(PASS);
         else
             currentSeries.add(SELL);
 
-        return currentSeries;
+        return new StockOperationSeries(currentSeries, prices);
     }
 
     private StockOperation lastOperationOf(List<StockOperation> currentSeries) {
