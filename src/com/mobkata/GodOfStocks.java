@@ -26,30 +26,15 @@ public class GodOfStocks {
             return allStockOperationsSeries;
 
         allStockOperationsSeries.add(
-                createStockOperationsSeries(prices.size() - 1, new ArrayList<StockOperation>(){{
+                new StockOperationSeries(new ArrayList<StockOperation>() {{
                     add(PASS);
-                }}, prices));
+                }}, prices).createCompleteSeries());
         allStockOperationsSeries.add(
-                createStockOperationsSeries(prices.size() - 1, new ArrayList<StockOperation>(){{
+                new StockOperationSeries(new ArrayList<StockOperation>() {{
                     add(BUY);
-                }}, prices));
+                }}, prices).createCompleteSeries());
 
         return allStockOperationsSeries;
     }
 
-    private StockOperationSeries createStockOperationsSeries(int numberOfPrices, List<StockOperation> currentSeries, List<Integer> prices) {
-        if (numberOfPrices == 0)
-            return new StockOperationSeries(currentSeries, prices);
-
-        if (lastOperationOf(currentSeries) == PASS)
-            currentSeries.add(PASS);
-        else
-            currentSeries.add(SELL);
-
-        return new StockOperationSeries(currentSeries, prices);
-    }
-
-    private StockOperation lastOperationOf(List<StockOperation> currentSeries) {
-        return currentSeries.get(currentSeries.size() - 1);
-    }
 }

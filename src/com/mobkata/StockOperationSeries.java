@@ -2,6 +2,9 @@ package com.mobkata;
 
 import java.util.List;
 
+import static com.mobkata.StockOperation.PASS;
+import static com.mobkata.StockOperation.SELL;
+
 public class StockOperationSeries {
 
     private List<Integer> prices;
@@ -33,5 +36,21 @@ public class StockOperationSeries {
 
     public List<StockOperation> operations() {
         return operations;
+    }
+
+    public StockOperationSeries createCompleteSeries() {
+        if (prices.size() - 1 == 0)
+            return this;
+
+        if (lastOperationOf() == PASS)
+            operations.add(PASS);
+        else
+            operations.add(SELL);
+
+        return this;
+    }
+
+    private StockOperation lastOperationOf() {
+        return operations.get(operations.size() - 1);
     }
 }
