@@ -17,22 +17,24 @@ public class StockOperationSeries {
     }
 
     public Integer sum() {
-        int sum = 0;
+        return operations.stream().
+                mapToInt(this::profitOf).
+                sum();
+    }
 
-        for (int i = 0; i < operations.size(); i++) {
-            switch (operations.get(i)) {
-                case PASS:
-                    break;
-                case BUY:
-                    sum -= prices.get(i);
-                    break;
-                case SELL:
-                    sum += prices.get(i);
-                    break;
-            }
+    private int profitOf(StockOperation operation) {
+        switch (operation) {
+            case BUY:
+                return -priceOf(operation);
+            case SELL:
+                return priceOf(operation);
+            default:
+                return 0;
         }
+    }
 
-        return sum;
+    private Integer priceOf(StockOperation operation) {
+        return prices.get(operations.indexOf(operation));
     }
 
     public List<StockOperation> operations() {
