@@ -3,8 +3,7 @@ package com.mobkata;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mobkata.StockOperation.PASS;
-import static com.mobkata.StockOperation.SELL;
+import static com.mobkata.StockOperation.*;
 
 public class StockOperationSeries {
 
@@ -45,19 +44,24 @@ public class StockOperationSeries {
         if (operations.size() == prices.size())
             return this;
 
-        if (lastOperationOf() == PASS)
+        if (lastOperation() == PASS)
             return new StockOperationSeries(new ArrayList<StockOperation>() {{
                 addAll(operations);
                 add(PASS);
-            }}, prices);
-        else
+            }}, prices).createCompleteSeries();
+        else if (lastOperation() == BUY)
             return new StockOperationSeries(new ArrayList<StockOperation>() {{
                 addAll(operations);
                 add(SELL);
-            }}, prices);
+            }}, prices).createCompleteSeries();
+        else
+            return new StockOperationSeries(new ArrayList<StockOperation>() {{
+                addAll(operations);
+                add(COOL);
+            }}, prices).createCompleteSeries();
     }
 
-    private StockOperation lastOperationOf() {
+    private StockOperation lastOperation() {
         return operations.get(operations.size() - 1);
     }
 }

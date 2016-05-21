@@ -60,15 +60,15 @@ public class TestGodOfStocks {
         );
     }
     
-//    @Test
-//    public void should_cool_after_sell() {
-//        assertStockOperationEquals(
-//                asList(
-//                        asList(BUY, SELL, COOL)
-//                ),
-//                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE)
-//        );
-//    }
+    @Test
+    public void should_cool_after_sell() {
+        assertStockOperationEquals(
+                asList(
+                        asList(BUY, SELL, COOL)
+                ),
+                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE)
+        );
+    }
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);
