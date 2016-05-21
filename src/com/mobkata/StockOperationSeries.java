@@ -6,36 +6,26 @@ import java.util.List;
 
 import static com.mobkata.StockOperation.*;
 import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 public class StockOperationSeries {
 
-    private List<Integer> prices;
-    private List<StockOperation> operations;
+    private final List<Integer> prices;
+    private final List<StockOperation> operations;
+    private final List<ProfitableStockOpertion> profitableStockOpertions;
 
     public StockOperationSeries(List<StockOperation> operations, List<Integer> prices) {
         this.operations = operations;
         this.prices = prices;
+        this.profitableStockOpertions = operations.stream().
+                map(operation -> ProfitableStockOpertion.create(operation, operations, prices)).
+                collect(toList());
     }
 
     public Integer sum() {
-        return operations.stream().
-                mapToInt(this::profitOf).
+        return profitableStockOpertions.stream().
+                mapToInt(profitableStockOpertion -> profitableStockOpertion.profit()).
                 sum();
-    }
-
-    private int profitOf(StockOperation operation) {
-        switch (operation) {
-            case BUY:
-                return -priceOf(operation);
-            case SELL:
-                return priceOf(operation);
-            default:
-                return 0;
-        }
-    }
-
-    private Integer priceOf(StockOperation operation) {
-        return prices.get(operations.indexOf(operation));
     }
 
     public List<StockOperation> operations() {
