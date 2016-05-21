@@ -12,18 +12,18 @@ public class StockOperationSeries {
 
     private final List<Integer> prices;
     private final List<StockOperation> operations;
-    private final List<ProfitableStockOpertion> profitableStockOpertions;
+    private final List<ProfitableStockOperation> profitableStockOperations;
 
     public StockOperationSeries(List<StockOperation> operations, List<Integer> prices) {
         this.operations = operations;
         this.prices = prices;
-        this.profitableStockOpertions = operations.stream().
-                map(operation -> ProfitableStockOpertion.create(operation, operations, prices)).
+        this.profitableStockOperations = operations.stream().
+                map(operation -> ProfitableStockOperation.create(operation, operations, prices)).
                 collect(toList());
     }
 
     public Integer sum() {
-        return profitableStockOpertions.stream().
+        return profitableStockOperations.stream().
                 mapToInt(profitableStockOpertion -> profitableStockOpertion.profit()).
                 sum();
     }
