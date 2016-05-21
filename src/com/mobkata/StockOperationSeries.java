@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.mobkata.StockOperation.*;
+import static java.util.Collections.emptyList;
 
 public class StockOperationSeries {
 
@@ -42,8 +43,17 @@ public class StockOperationSeries {
     }
 
     public List<StockOperationSeries> createCompleteSeries() {
+        if (prices.isEmpty())
+            return emptyList();
+
         if (isSeriesComplete())
             return Arrays.asList(this);
+
+        if (operations.size() == 0)
+            return new ArrayList<StockOperationSeries>() {{
+                addAll(towardsCompleteSeries(PASS));
+                addAll(towardsCompleteSeries(BUY));
+            }};
 
         if (lastOperation() == PASS)
             return towardsCompleteSeries(PASS);
