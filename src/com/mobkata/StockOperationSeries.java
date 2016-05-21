@@ -43,28 +43,40 @@ public class StockOperationSeries {
     }
 
     public List<StockOperationSeries> createCompleteSeries() {
-        if (prices.isEmpty())
+        if (hasNoPrice())
             return emptyList();
 
         if (isSeriesComplete())
             return Arrays.asList(this);
 
-        if (operations.size() == 0 || lastOperation() == PASS)
-            return new ArrayList<StockOperationSeries>() {{
-                addAll(towardsCompleteSeries(PASS));
-                addAll(towardsCompleteSeries(BUY));
-            }};
+        if (hasNoOperation() || lastOperation() == PASS)
+            return towardsCompleteSeriesWith(PASS, BUY);
         else if (lastOperation() == BUY)
-            return towardsCompleteSeries(SELL);
+            return towardsCompleteSeriesWithOnePossibility(SELL);
         else
-            return towardsCompleteSeries(COOL);
+            return towardsCompleteSeriesWithOnePossibility(COOL);
+    }
+
+    private boolean hasNoPrice() {
+        return prices.isEmpty();
+    }
+
+    private boolean hasNoOperation() {
+        return operations.size() == 0;
+    }
+
+    private ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
+        return new ArrayList<StockOperationSeries>() {{
+            for (StockOperation nextOperation : nextOperations)
+                addAll(towardsCompleteSeriesWithOnePossibility(nextOperation));
+        }};
     }
 
     private boolean isSeriesComplete() {
         return operations.size() == prices.size();
     }
 
-    private List<StockOperationSeries> towardsCompleteSeries(final StockOperation nextOperation) {
+    private List<StockOperationSeries> towardsCompleteSeriesWithOnePossibility(final StockOperation nextOperation) {
         return new StockOperationSeries(new ArrayList<StockOperation>() {{
             addAll(operations);
             add(nextOperation);
