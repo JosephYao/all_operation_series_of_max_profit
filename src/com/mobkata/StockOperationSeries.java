@@ -32,14 +32,14 @@ public class StockOperationSeries {
         return operations;
     }
 
-    public List<StockOperationSeries> createCompleteSeries() {
+    public List<StockOperationSeries> towardsCompleteSeries() {
         if (hasNoPrice())
             return emptyList();
 
         if (isSeriesComplete())
             return Arrays.asList(this);
 
-        if (hasNoOperation() || lastOperation() == PASS)
+        if (hasNoOperation() || lastOperation() == PASS || lastOperation() == COOL)
             return towardsCompleteSeriesWith(PASS, BUY);
         else if (lastOperation() == BUY)
             return towardsCompleteSeriesWithOnePossibility(SELL);
@@ -70,7 +70,7 @@ public class StockOperationSeries {
         return new StockOperationSeries(new ArrayList<StockOperation>() {{
             addAll(operations);
             add(nextOperation);
-        }}, prices).createCompleteSeries();
+        }}, prices).towardsCompleteSeries();
     }
 
     private StockOperation lastOperation() {
