@@ -2,11 +2,11 @@ package com.mobkata;
 
 import java.util.List;
 
-public class ProfitableStockOpertion {
+public class ProfitableStockOperation {
     private final StockOperation operation;
     private final Integer price;
 
-    public ProfitableStockOpertion(StockOperation operation, Integer price) {
+    public ProfitableStockOperation(StockOperation operation, Integer price) {
         this.operation = operation;
         this.price = price;
     }
@@ -22,8 +22,8 @@ public class ProfitableStockOpertion {
         }
     }
 
-    public static ProfitableStockOpertion create(StockOperation operation, List<StockOperation> operations, List<Integer> prices) {
-        return new ProfitableStockOpertion(operation, priceOf(operation, operations, prices));
+    public static ProfitableStockOperation create(StockOperation operation, List<StockOperation> operations, List<Integer> prices) {
+        return new ProfitableStockOperation(operation, priceOf(operation, operations, prices));
     }
 
     private static Integer priceOf(StockOperation operation, List<StockOperation> operations, List<Integer> prices) {

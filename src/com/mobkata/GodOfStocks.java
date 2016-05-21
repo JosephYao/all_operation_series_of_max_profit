@@ -7,12 +7,12 @@ import static java.util.stream.Collectors.toList;
 
 public class GodOfStocks {
     public List<List<StockOperation>> operationsForMaxProfit(List<Integer> prices) {
-        List<StockOperationSeries> allStockOperationsSeries = new StockOperationSeries(emptyList(), prices).towardsCompleteSeries();
+        List<StockOperationSeries> allStockOperationSeries = new StockOperationSeries(emptyList(), prices).towardsCompleteSeries();
 
-        int maxProfit = allStockOperationsSeries.stream().
+        int maxProfit = allStockOperationSeries.stream().
                 mapToInt(series -> series.sum()).max().orElse(0);
 
-        return allStockOperationsSeries.stream().
+        return allStockOperationSeries.stream().
                 filter(series -> series.sum() == maxProfit).
                 map(series -> series.operations()).
                 collect(toList());
