@@ -1,5 +1,5 @@
 package com.mobkata;
 
 public enum StockOperation {
-    BUY, SELL, PASS
+    BUY, SELL, COOL, PASS
 }

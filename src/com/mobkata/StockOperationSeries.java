@@ -19,7 +19,7 @@ public class StockOperationSeries {
     public Integer sum() {
         int sum = 0;
 
-        for (int i = 0; i < prices.size(); i++) {
+        for (int i = 0; i < operations.size(); i++) {
             switch (operations.get(i)) {
                 case PASS:
                     break;
@@ -40,7 +40,7 @@ public class StockOperationSeries {
     }
 
     public StockOperationSeries createCompleteSeries() {
-        if (prices.size() - 1 == 0)
+        if (operations.size() == prices.size())
             return this;
 
         if (lastOperationOf() == PASS)
