@@ -70,15 +70,15 @@ public class TestGodOfStocks {
         );
     }
 
-//    @Test
-//    public void can_buy_after_pass() {
-//        assertStockOperationEquals(
-//                asList(
-//                        asList(PASS, BUY, SELL)
-//                ),
-//                asList(LOWER_PRICE, LOWER_PRICE, HIGHER_PRICE)
-//        );
-//    }
+    @Test
+    public void can_buy_after_pass() {
+        assertStockOperationEquals(
+                asList(
+                        asList(PASS, BUY, SELL)
+                ),
+                asList(LOWER_PRICE, LOWER_PRICE, HIGHER_PRICE)
+        );
+    }
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);

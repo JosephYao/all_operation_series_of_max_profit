@@ -49,14 +49,11 @@ public class StockOperationSeries {
         if (isSeriesComplete())
             return Arrays.asList(this);
 
-        if (operations.size() == 0)
+        if (operations.size() == 0 || lastOperation() == PASS)
             return new ArrayList<StockOperationSeries>() {{
                 addAll(towardsCompleteSeries(PASS));
                 addAll(towardsCompleteSeries(BUY));
             }};
-
-        if (lastOperation() == PASS)
-            return towardsCompleteSeries(PASS);
         else if (lastOperation() == BUY)
             return towardsCompleteSeries(SELL);
         else
