@@ -41,24 +41,26 @@ public class StockOperationSeries {
     }
 
     public StockOperationSeries createCompleteSeries() {
-        if (operations.size() == prices.size())
+        if (isSeriesComplete())
             return this;
 
         if (lastOperation() == PASS)
-            return new StockOperationSeries(new ArrayList<StockOperation>() {{
-                addAll(operations);
-                add(PASS);
-            }}, prices).createCompleteSeries();
+            return towardsCompleteSeries(PASS);
         else if (lastOperation() == BUY)
-            return new StockOperationSeries(new ArrayList<StockOperation>() {{
-                addAll(operations);
-                add(SELL);
-            }}, prices).createCompleteSeries();
+            return towardsCompleteSeries(SELL);
         else
-            return new StockOperationSeries(new ArrayList<StockOperation>() {{
-                addAll(operations);
-                add(COOL);
-            }}, prices).createCompleteSeries();
+            return towardsCompleteSeries(COOL);
+    }
+
+    private boolean isSeriesComplete() {
+        return operations.size() == prices.size();
+    }
+
+    private StockOperationSeries towardsCompleteSeries(final StockOperation nextOperation) {
+        return new StockOperationSeries(new ArrayList<StockOperation>() {{
+            addAll(operations);
+            add(nextOperation);
+        }}, prices).createCompleteSeries();
     }
 
     private StockOperation lastOperation() {
