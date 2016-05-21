@@ -12,7 +12,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 
 public class TestGodOfStocks {
 
-    private static final int HIGHER_PRICE = 2;
+    private static final int HIGHER_PRICE = 10;
     private static final int LOWER_PRICE = 1;
     GodOfStocks godOfStocks = new GodOfStocks();
 
@@ -72,12 +72,9 @@ public class TestGodOfStocks {
 
     @Test
     public void can_buy_after_pass() {
-        assertStockOperationEquals(
-                asList(
-                        asList(PASS, BUY, SELL)
-                ),
-                asList(LOWER_PRICE, LOWER_PRICE, HIGHER_PRICE)
-        );
+        List<Integer> prices = asList(LOWER_PRICE + 1, LOWER_PRICE, HIGHER_PRICE);
+        assertEquals(HIGHER_PRICE - LOWER_PRICE, godOfStocks.maxProfit(prices));
+        assertStockOperationEquals(asList(asList(PASS, BUY, SELL)),prices);
     }
 
     @Test
@@ -98,6 +95,20 @@ public class TestGodOfStocks {
                 ),
                 asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE)
         );
+    }
+
+    @Test
+    public void can_pass_after_buy() {
+        List<Integer> prices = asList(LOWER_PRICE, LOWER_PRICE + 1, HIGHER_PRICE);
+        assertEquals(HIGHER_PRICE - LOWER_PRICE, godOfStocks.maxProfit(prices));
+        assertStockOperationEquals(asList(asList(BUY, PASS, SELL)),prices);
+    }
+
+    @Test
+    public void can_pass_twice_after_buy() {
+        List<Integer> prices = asList(LOWER_PRICE, LOWER_PRICE + 1, LOWER_PRICE + 1, HIGHER_PRICE);
+        assertEquals(HIGHER_PRICE - LOWER_PRICE, godOfStocks.maxProfit(prices));
+        assertStockOperationEquals(asList(asList(BUY, PASS, PASS, SELL)),prices);
     }
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {

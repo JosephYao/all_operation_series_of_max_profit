@@ -44,10 +44,16 @@ public class StockOperationSeries {
             return towardsCompleteSeriesWith(PASS, BUY);
 
         if (lastOperation() == BUY)
-            return towardsCompleteSeriesWith(SELL);
+            return towardsCompleteSeriesWith(SELL, PASS);
 
         if (lastOperation() == SELL)
             return towardsCompleteSeriesWith(COOL);
+
+        if (operations.size() >= 2 && lastOperation() == PASS && operations.get(operations.size() - 2) == BUY)
+            return towardsCompleteSeriesWith(SELL, PASS);
+
+        if (operations.size() == 3 && lastOperation() == PASS && operations.get(operations.size() - 2) == PASS && operations.get(operations.size() - 3) == BUY)
+            return towardsCompleteSeriesWith(SELL);
 
         return towardsCompleteSeriesWith(PASS, BUY);
     }
