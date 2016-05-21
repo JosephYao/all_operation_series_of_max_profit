@@ -39,12 +39,25 @@ public class StockOperationSeries {
         if (isSeriesComplete())
             return Arrays.asList(this);
 
-        if (hasNoOperation() || lastOperation() == PASS || lastOperation() == COOL)
+        if (hasNoOperation())
             return towardsCompleteSeriesWith(PASS, BUY);
-        else if (lastOperation() == BUY)
-            return towardsCompleteSeriesWithOnePossibility(SELL);
-        else
-            return towardsCompleteSeriesWithOnePossibility(COOL);
+
+        if (lastOperation() == BUY)
+            return towardsCompleteSeriesWith(SELL);
+
+        if (lastOperation() == SELL)
+            return towardsCompleteSeriesWith(COOL);
+
+        return towardsCompleteSeriesWith(PASS, BUY);
+    }
+
+    private ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
+        return new ArrayList<StockOperationSeries>() {{
+            for (final StockOperation nextOperation : nextOperations)
+                addAll(new StockOperationSeries(new ArrayList<StockOperation>(operations) {{
+                    add(nextOperation);
+                }}, prices).towardsCompleteSeries());
+        }};
     }
 
     private boolean hasNoPrice() {
@@ -55,22 +68,8 @@ public class StockOperationSeries {
         return operations.size() == 0;
     }
 
-    private ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
-        return new ArrayList<StockOperationSeries>() {{
-            for (StockOperation nextOperation : nextOperations)
-                addAll(towardsCompleteSeriesWithOnePossibility(nextOperation));
-        }};
-    }
-
     private boolean isSeriesComplete() {
         return operations.size() == prices.size();
-    }
-
-    private List<StockOperationSeries> towardsCompleteSeriesWithOnePossibility(final StockOperation nextOperation) {
-        return new StockOperationSeries(new ArrayList<StockOperation>() {{
-            addAll(operations);
-            add(nextOperation);
-        }}, prices).towardsCompleteSeries();
     }
 
     private StockOperation lastOperation() {
