@@ -26,9 +26,9 @@ public class GodOfStocks {
         if (prices.size() == 0)
             return allStockOperationsSeries;
 
-        allStockOperationsSeries.add(
+        allStockOperationsSeries.addAll(
                 new StockOperationSeries(Arrays.asList(PASS), prices).createCompleteSeries());
-        allStockOperationsSeries.add(
+        allStockOperationsSeries.addAll(
                 new StockOperationSeries(Arrays.asList(BUY), prices).createCompleteSeries());
 
         return allStockOperationsSeries;

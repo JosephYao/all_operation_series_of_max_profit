@@ -1,6 +1,7 @@
 package com.mobkata;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.mobkata.StockOperation.*;
@@ -40,9 +41,9 @@ public class StockOperationSeries {
         return operations;
     }
 
-    public StockOperationSeries createCompleteSeries() {
+    public List<StockOperationSeries> createCompleteSeries() {
         if (isSeriesComplete())
-            return this;
+            return Arrays.asList(this);
 
         if (lastOperation() == PASS)
             return towardsCompleteSeries(PASS);
@@ -56,7 +57,7 @@ public class StockOperationSeries {
         return operations.size() == prices.size();
     }
 
-    private StockOperationSeries towardsCompleteSeries(final StockOperation nextOperation) {
+    private List<StockOperationSeries> towardsCompleteSeries(final StockOperation nextOperation) {
         return new StockOperationSeries(new ArrayList<StockOperation>() {{
             addAll(operations);
             add(nextOperation);
