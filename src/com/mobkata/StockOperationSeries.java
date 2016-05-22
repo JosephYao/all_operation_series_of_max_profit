@@ -3,6 +3,7 @@ package com.mobkata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.mobkata.ProfitableStockOperation.create;
 import static com.mobkata.StockOperation.*;
@@ -47,21 +48,27 @@ public class StockOperationSeries {
         if (operationsOfLastEquals(1, SELL))
             return towardsCompleteSeriesWith(COOL);
 
-        if (operationsOfLastEquals(1, BUY))
+        if (hasNotSold())
             return towardsCompleteSeriesWith(SELL, PASS);
-
-        if (operationsOfLastEquals(2, BUY, PASS))
-            return towardsCompleteSeriesWith(SELL, PASS);
-
-        if (operationsOfLastEquals(3, BUY, PASS, PASS))
-            return towardsCompleteSeriesWith(SELL);
 
         return towardsCompleteSeriesWith(PASS, BUY);
     }
 
+    private boolean hasNotSold() {
+        return IntStream.range(1, operations.size() + 1).
+                anyMatch(number ->
+                        operationsOfLastEquals(number, lastOperationsOfNotSold(number)));
+    }
+
+    private StockOperation[] lastOperationsOfNotSold(int number) {
+        StockOperation[] lastOperations = new StockOperation[number];
+        lastOperations[0] = BUY;
+        IntStream.range(1, number).forEach(i -> lastOperations[i] = PASS);
+        return lastOperations;
+    }
+
     private boolean operationsOfLastEquals(int number, StockOperation... lastOperations) {
-        return operations.size() >= number &&
-                lastIndexOfSubList(operations, Arrays.asList(lastOperations)) == operations.size() - number;
+        return lastIndexOfSubList(operations, Arrays.asList(lastOperations)) == operations.size() - number;
     }
 
     private ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
