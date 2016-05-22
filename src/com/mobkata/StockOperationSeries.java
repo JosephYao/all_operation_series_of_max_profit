@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mobkata.StockOperation.*;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
 public class StockOperationSeries {
@@ -26,10 +25,21 @@ public class StockOperationSeries {
     }
 
     private static StockOperationSeries create(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
-        if (prices.isEmpty())
+        if (hasNoPrice(prices))
             return new EmptyStockOperationSeries();
 
+        if (isCompleteSeries(prices, operations))
+            return new CompleteStockOperationSeries(prices, operations, sum, hasNotSold);
+
         return new StockOperationSeries(prices, operations, sum, hasNotSold);
+    }
+
+    private static boolean isCompleteSeries(List<Integer> prices, List<StockOperation> operations) {
+        return operations.size() == prices.size();
+    }
+
+    private static boolean hasNoPrice(List<Integer> prices) {
+        return prices.isEmpty();
     }
 
     public Integer sum() {
@@ -41,9 +51,6 @@ public class StockOperationSeries {
     }
 
     public List<StockOperationSeries> towardsCompleteSeries() {
-        if (isSeriesComplete())
-            return asList(this);
-
         if (isSellLastOperation())
             return towardsCompleteSeriesWith(COOL);
 
@@ -85,7 +92,7 @@ public class StockOperationSeries {
     }
 
     private StockOperationSeries stockOperationSeriesWith(final StockOperation nextOperation) {
-        return new StockOperationSeries(
+        return create(
                 prices, new ArrayList<StockOperation>(operations) {{
                     add(nextOperation);
                 }},
@@ -117,14 +124,6 @@ public class StockOperationSeries {
             default:
                 return hasNotSold;
         }
-    }
-
-    private boolean hasNoPrice() {
-        return prices.isEmpty();
-    }
-
-    private boolean isSeriesComplete() {
-        return operations.size() == prices.size();
     }
 
 }
