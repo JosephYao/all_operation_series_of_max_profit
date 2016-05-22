@@ -70,15 +70,19 @@ public class StockOperationSeries {
     private ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
         return new ArrayList<StockOperationSeries>() {{
             for (final StockOperation nextOperation : nextOperations)
-                addAll(new StockOperationSeries(
-                        new ArrayList<StockOperation>(operations) {{
+                addAll(stockOperationSeriesWith(nextOperation).towardsCompleteSeries());
+        }};
+    }
+
+    private StockOperationSeries stockOperationSeriesWith(final StockOperation nextOperation) {
+        return new StockOperationSeries(
+                new ArrayList<StockOperation>(operations) {{
                     add(nextOperation);
                 }},
-                        prices,
-                        new ArrayList<ProfitableStockOperation>(profitableStockOperations) {{
+                prices,
+                new ArrayList<ProfitableStockOperation>(profitableStockOperations) {{
                     add(profitableStockOperation(nextOperation, operations, prices));
-                }}).towardsCompleteSeries());
-        }};
+                }});
     }
 
     private boolean hasNoPrice() {
@@ -86,7 +90,7 @@ public class StockOperationSeries {
     }
 
     private boolean hasNoOperation() {
-        return operations.size() == 0;
+        return operations.isEmpty();
     }
 
     private boolean isSeriesComplete() {
