@@ -44,6 +44,17 @@ public class AcceptanceTestFromWu {
                 asList(BUY, SELL, COOL)), prices);
     }
 
+    @Test
+    public void multiple_before_one_rise() {
+        List<Integer> prices = asList(5,5,5,5,3,4);
+        assertEquals(1, godOfStocks.maxProfit(prices));
+        assertStockOperationEquals(asList(
+                asList(PASS, PASS, PASS, PASS, BUY, SELL),
+                asList(PASS, BUY, SELL, COOL, BUY, SELL),
+                asList(BUY, PASS, SELL, COOL, BUY, SELL),
+                asList(BUY, SELL, COOL, PASS, BUY, SELL)), prices);
+    }
+
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);
         assertEquals(expected.size(), actual.size());
