@@ -34,6 +34,15 @@ public class AcceptanceTestFromWu {
         assertEquals(6, godOfStocks.maxProfit(prices));
         assertStockOperationEquals(asList(asList(PASS, BUY, SELL, COOL, BUY, SELL)), prices);
     }
+    
+    @Test
+    public void multiple_plans() {
+        List<Integer> prices = asList(1,2,2);
+        assertEquals(1, godOfStocks.maxProfit(prices));
+        assertStockOperationEquals(asList(
+                asList(BUY, PASS, SELL),
+                asList(BUY, SELL, COOL)), prices);
+    }
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);
