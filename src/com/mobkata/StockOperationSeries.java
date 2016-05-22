@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.mobkata.ProfitableStockOperation.*;
+import static com.mobkata.ProfitableStockOperation.create;
 import static com.mobkata.StockOperation.*;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.lastIndexOfSubList;
 import static java.util.stream.Collectors.toList;
 
 public class StockOperationSeries {
@@ -58,18 +59,9 @@ public class StockOperationSeries {
         return towardsCompleteSeriesWith(PASS, BUY);
     }
 
-    private boolean operationsOfLastEquals(int number, StockOperation... operations) {
-        if(this.operations.size() < number)
-            return false;
-
-        boolean result = true;
-        for (StockOperation operation : operations)
-            result &= operationOfLastEquals(number--, operation);
-        return result;
-    }
-
-    private boolean operationOfLastEquals(int position, StockOperation operation) {
-        return operations.get(operations.size() - position) == operation;
+    private boolean operationsOfLastEquals(int number, StockOperation... lastOperations) {
+        return operations.size() >= number &&
+                lastIndexOfSubList(operations, Arrays.asList(lastOperations)) == operations.size() - number;
     }
 
     private ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
