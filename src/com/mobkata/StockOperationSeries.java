@@ -14,11 +14,22 @@ public class StockOperationSeries {
     private final Integer sum;
     private boolean hasNotSold;
 
-    public StockOperationSeries(List<StockOperation> operations, List<Integer> prices, Integer sum, boolean hasNotSold) {
+    public StockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
         this.operations = operations;
         this.prices = prices;
         this.sum = sum;
         this.hasNotSold = hasNotSold;
+    }
+
+    public static List<StockOperationSeries> allStockOperationSeries(List<Integer> prices) {
+        return create(prices, emptyList(), 0, false).towardsCompleteSeries();
+    }
+
+    private static StockOperationSeries create(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
+        if (prices.isEmpty())
+            return new EmptyStockOperationSeries();
+
+        return new StockOperationSeries(prices, operations, sum, hasNotSold);
     }
 
     public Integer sum() {
@@ -30,9 +41,6 @@ public class StockOperationSeries {
     }
 
     public List<StockOperationSeries> towardsCompleteSeries() {
-        if (hasNoPrice())
-            return emptyList();
-
         if (isSeriesComplete())
             return asList(this);
 
@@ -78,10 +86,9 @@ public class StockOperationSeries {
 
     private StockOperationSeries stockOperationSeriesWith(final StockOperation nextOperation) {
         return new StockOperationSeries(
-                new ArrayList<StockOperation>(operations) {{
+                prices, new ArrayList<StockOperation>(operations) {{
                     add(nextOperation);
                 }},
-                prices,
                 sum + profitOf(nextOperation),
                 nextHasNotSold(nextOperation, hasNotSold));
     }

@@ -2,7 +2,7 @@ package com.mobkata;
 
 import java.util.List;
 
-import static java.util.Collections.emptyList;
+import static com.mobkata.StockOperationSeries.allStockOperationSeries;
 import static java.util.stream.Collectors.toList;
 
 public class GodOfStocks {
@@ -16,10 +16,6 @@ public class GodOfStocks {
                 filter(series -> series.sum() == maxProfit).
                 map(StockOperationSeries::operations).
                 collect(toList());
-    }
-
-    private List<StockOperationSeries> allStockOperationSeries(List<Integer> prices) {
-        return new StockOperationSeries(emptyList(), prices, 0, false).towardsCompleteSeries();
     }
 
     public int maxProfit(List<Integer> prices) {
