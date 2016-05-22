@@ -20,6 +20,13 @@ public class AcceptanceTestFromWu {
         assertEquals(4, godOfStocks.maxProfit(prices));
         assertStockOperationEquals(asList(asList(BUY, PASS, PASS, PASS, SELL)), prices);
     }
+    
+    @Test
+    public void continuously_drop() {
+        List<Integer> prices = asList(5,4,3,2,1);
+        assertEquals(0, godOfStocks.maxProfit(prices));
+        assertStockOperationEquals(asList(asList(PASS, PASS, PASS, PASS, PASS)), prices);
+    }
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);
