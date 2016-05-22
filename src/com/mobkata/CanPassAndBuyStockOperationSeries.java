@@ -3,10 +3,11 @@ package com.mobkata;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mobkata.StockOperation.*;
+import static com.mobkata.StockOperation.BUY;
+import static com.mobkata.StockOperation.PASS;
 
-public class NotSoldYetStockOperationSeries extends StockOperationSeries {
-    public NotSoldYetStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum) {
+public class CanPassAndBuyStockOperationSeries extends StockOperationSeries {
+    public CanPassAndBuyStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum) {
         super(prices, operations, sum);
     }
 
@@ -16,16 +17,16 @@ public class NotSoldYetStockOperationSeries extends StockOperationSeries {
             addAll(createTowardsCompleteSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{
-                        add(SELL);
+                        add(PASS);
                     }},
-                    sum + priceOfNextOperation(),
+                    sum,
                     false));
             addAll(createTowardsCompleteSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{
-                        add(PASS);
+                        add(BUY);
                     }},
-                    sum,
+                    sum - priceOfNextOperation(),
                     true));
         }};
     }

@@ -12,11 +12,11 @@ public class SoldAtLastStockOperationSeries extends StockOperationSeries {
 
     @Override
     public List<StockOperationSeries> towardsCompleteSeries() {
-        return create(
+        return createTowardsCompleteSeries(
                 prices, new ArrayList<StockOperation>(operations) {{
                     add(COOL);
                 }},
                 sum,
-                false).towardsCompleteSeries();
+                false);
     }
 }

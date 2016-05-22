@@ -1,12 +1,11 @@
 package com.mobkata;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.mobkata.StockOperation.*;
+import static com.mobkata.StockOperation.SELL;
 import static java.util.Collections.emptyList;
 
-public class StockOperationSeries {
+public abstract class StockOperationSeries {
 
     protected final List<Integer> prices;
     protected final List<StockOperation> operations;
@@ -22,7 +21,11 @@ public class StockOperationSeries {
         return create(prices, emptyList(), 0, false).towardsCompleteSeries();
     }
 
-    protected static StockOperationSeries create(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
+    protected static List<StockOperationSeries> createTowardsCompleteSeries(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
+        return create(prices, operations, sum, hasNotSold).towardsCompleteSeries();
+    }
+
+    private static StockOperationSeries create(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
         if (hasNoPrice(prices))
             return new EmptyStockOperationSeries();
 
@@ -36,9 +39,9 @@ public class StockOperationSeries {
             return new NotSoldYetStockOperationSeries(prices, operations, sum);
 
         if (isBuyWillBeALost(prices, operations))
-            return new PassOnlyStockOperationSeries(prices, operations, sum);
+            return new CanPassOnlyStockOperationSeries(prices, operations, sum);
 
-        return new StockOperationSeries(prices, operations, sum);
+        return new CanPassAndBuyStockOperationSeries(prices, operations, sum);
     }
 
     private static boolean isSoldAtLast(List<StockOperation> operations) {
@@ -85,23 +88,6 @@ public class StockOperationSeries {
         return operations;
     }
 
-    public List<StockOperationSeries> towardsCompleteSeries() {
-        return new ArrayList<StockOperationSeries>() {{
-            addAll(create(
-                    prices,
-                    new ArrayList<StockOperation>(operations) {{
-                        add(PASS);
-                    }},
-                    sum,
-                    false).towardsCompleteSeries());
-            addAll(create(
-                    prices,
-                    new ArrayList<StockOperation>(operations) {{
-                        add(BUY);
-                    }},
-                    sum - priceOfNextOperation(),
-                    true).towardsCompleteSeries());
-        }};
-    }
+    public abstract List<StockOperationSeries> towardsCompleteSeries();
 
 }
