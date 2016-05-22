@@ -9,12 +9,16 @@ import static org.junit.Assert.assertEquals;
 
 public class TestProfitableStockOperation {
 
+    private static final int BUY_PRICE = 4;
+    private static final int FIRST_BUY_PRICE = 1;
+    private static final int ANY_PRICE = 2;
+
     @Test
-    public void price_is_different_for_two_buy_operations() {
-        assertProfitEquals(-4, profitableStockOperation(
+    public void second_buy_price_is_different_from_first_buy() {
+        assertProfitEquals(-BUY_PRICE, profitableStockOperation(
                 BUY,
                 asList(BUY, SELL, COOL),
-                asList(1, 2, 3, 4)));
+                asList(FIRST_BUY_PRICE, ANY_PRICE, ANY_PRICE, BUY_PRICE)));
     }
 
     private void assertProfitEquals(int expected, ProfitableStockOperation profitableStockOperation) {
