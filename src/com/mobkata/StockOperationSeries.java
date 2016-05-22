@@ -29,9 +29,16 @@ public class StockOperationSeries {
             return new EmptyStockOperationSeries();
 
         if (isCompleteSeries(prices, operations))
-            return new CompleteStockOperationSeries(prices, operations, sum, hasNotSold);
+            return new CompleteStockOperationSeries(operations, sum);
+
+        if (isSoldAtLast(operations))
+            return new SoldAtLastStockOperationSeries(prices, operations, sum);
 
         return new StockOperationSeries(prices, operations, sum, hasNotSold);
+    }
+
+    private static boolean isSoldAtLast(List<StockOperation> operations) {
+        return operations.size() > 0 && operations.get(operations.size() - 1) == SELL;
     }
 
     private static boolean isCompleteSeries(List<Integer> prices, List<StockOperation> operations) {
@@ -51,9 +58,6 @@ public class StockOperationSeries {
     }
 
     public List<StockOperationSeries> towardsCompleteSeries() {
-        if (isSellLastOperation())
-            return towardsCompleteSeriesWith(COOL);
-
         if (hasNotSold)
             return towardsCompleteSeriesWith(SELL, PASS);
 
@@ -63,12 +67,7 @@ public class StockOperationSeries {
         return towardsCompleteSeriesWith(PASS, BUY);
     }
 
-    private boolean isSellLastOperation() {
-        return operations.size() > 0 &&
-                operations.get(operations.size() - 1) == SELL;
-    }
-
-    private ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
+    protected ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
         return new ArrayList<StockOperationSeries>() {{
             for (final StockOperation nextOperation : nextOperations)
                 addAll(stockOperationSeriesWith(nextOperation).towardsCompleteSeries());
