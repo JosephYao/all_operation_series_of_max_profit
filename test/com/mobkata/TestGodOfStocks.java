@@ -113,7 +113,7 @@ public class TestGodOfStocks {
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);
-        assertEquals(expected, actual);
+        assertEquals(expected.size(), actual.size());
         expected.stream().forEach(
                 series -> assertThat(actual, hasItem(series)));
     }

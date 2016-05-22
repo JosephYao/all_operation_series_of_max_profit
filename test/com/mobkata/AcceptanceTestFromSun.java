@@ -21,12 +21,12 @@ public class AcceptanceTestFromSun {
         assertStockOperationEquals(asList(asList(BUY, SELL, COOL, BUY, SELL)), prices);
     }
 
-//    @Test
-//    public void join_two_raises() {
-//        List<Integer> prices = asList(1, 3, 2, 4, 5, 2);
-//        assertEquals(4, godOfStocks.maxProfit(prices));
-//        assertStockOperationEquals(asList(asList(BUY, PASS, PASS, PASS, SELL, COOL)), prices);
-//    }
+    @Test
+    public void join_two_raises() {
+        List<Integer> prices = asList(1, 3, 2, 4, 5, 2);
+        assertEquals(4, godOfStocks.maxProfit(prices));
+        assertStockOperationEquals(asList(asList(BUY, PASS, PASS, PASS, SELL, COOL)), prices);
+    }
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);
