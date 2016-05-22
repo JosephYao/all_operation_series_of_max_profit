@@ -7,7 +7,7 @@ import static com.mobkata.StockOperation.COOL;
 
 public class SoldAtLastStockOperationSeries extends StockOperationSeries {
     public SoldAtLastStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum) {
-        super(prices, operations, sum, false);
+        super(prices, operations, sum);
     }
 
     @Override

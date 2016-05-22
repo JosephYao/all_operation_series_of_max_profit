@@ -7,7 +7,7 @@ import static java.util.Collections.emptyList;
 public class EmptyStockOperationSeries extends StockOperationSeries {
 
     public EmptyStockOperationSeries() {
-        super(emptyList(), emptyList(), 0, false);
+        super(emptyList(), emptyList(), 0);
     }
 
     @Override

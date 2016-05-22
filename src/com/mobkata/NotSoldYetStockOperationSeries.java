@@ -7,7 +7,7 @@ import static com.mobkata.StockOperation.*;
 
 public class NotSoldYetStockOperationSeries extends StockOperationSeries {
     public NotSoldYetStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum) {
-        super(prices, operations, sum, true);
+        super(prices, operations, sum);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class NotSoldYetStockOperationSeries extends StockOperationSeries {
                     new ArrayList<StockOperation>(operations) {{
                         add(SELL);
                     }},
-                    sum + priceOfNextOperation(prices, operations),
+                    sum + priceOfNextOperation(),
                     false).towardsCompleteSeries());
             addAll(create(
                     prices,

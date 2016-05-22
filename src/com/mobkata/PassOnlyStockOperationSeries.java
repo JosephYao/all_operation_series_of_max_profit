@@ -6,8 +6,8 @@ import java.util.List;
 import static com.mobkata.StockOperation.PASS;
 
 public class PassOnlyStockOperationSeries extends StockOperationSeries {
-    public PassOnlyStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
-        super(prices, operations, sum, hasNotSold);
+    public PassOnlyStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum) {
+        super(prices, operations, sum);
     }
 
     @Override
@@ -18,6 +18,6 @@ public class PassOnlyStockOperationSeries extends StockOperationSeries {
                     add(PASS);
                 }},
                 sum,
-                hasNotSold).towardsCompleteSeries();
+                false).towardsCompleteSeries();
     }
 }
