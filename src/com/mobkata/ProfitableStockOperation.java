@@ -22,12 +22,12 @@ public class ProfitableStockOperation {
         }
     }
 
-    public static ProfitableStockOperation create(StockOperation operation, List<StockOperation> operations, List<Integer> prices) {
-        return new ProfitableStockOperation(operation, priceOf(operation, operations, prices));
+    public static ProfitableStockOperation profitableStockOperation(StockOperation operation, List<StockOperation> operations, List<Integer> prices) {
+        return new ProfitableStockOperation(operation, priceOfNextOperation(operations, prices));
     }
 
-    private static Integer priceOf(StockOperation operation, List<StockOperation> operations, List<Integer> prices) {
-        return prices.get(operations.indexOf(operation));
+    private static Integer priceOfNextOperation(List<StockOperation> operations, List<Integer> prices) {
+        return prices.get(operations.size());
     }
 
 }

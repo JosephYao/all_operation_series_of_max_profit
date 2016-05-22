@@ -93,7 +93,7 @@ public class TestGodOfStocks {
                 asList(
                         asList(BUY, SELL, COOL, BUY, SELL)
                 ),
-                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE)
+                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE, LOWER_PRICE, HIGHER_PRICE)
         );
     }
 
@@ -113,7 +113,7 @@ public class TestGodOfStocks {
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);
-        assertEquals(expected.size(), actual.size());
+        assertEquals(expected, actual);
         expected.stream().forEach(
                 series -> assertThat(actual, hasItem(series)));
     }

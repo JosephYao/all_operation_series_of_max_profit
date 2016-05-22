@@ -19,7 +19,7 @@ public class GodOfStocks {
     }
 
     private List<StockOperationSeries> allStockOperationSeries(List<Integer> prices) {
-        return new StockOperationSeries(emptyList(), prices).towardsCompleteSeries();
+        return new StockOperationSeries(emptyList(), prices, emptyList()).towardsCompleteSeries();
     }
 
     public int maxProfit(List<Integer> prices) {
