@@ -8,10 +8,10 @@ import static java.util.Collections.emptyList;
 
 public class StockOperationSeries {
 
-    private final List<Integer> prices;
-    private final List<StockOperation> operations;
-    private final Integer sum;
-    private boolean hasNotSold;
+    protected final List<Integer> prices;
+    protected final List<StockOperation> operations;
+    protected final Integer sum;
+    protected boolean hasNotSold;
 
     public StockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
         this.operations = operations;
@@ -24,7 +24,7 @@ public class StockOperationSeries {
         return create(prices, emptyList(), 0, false).towardsCompleteSeries();
     }
 
-    private static StockOperationSeries create(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
+    protected static StockOperationSeries create(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
         if (hasNoPrice(prices))
             return new EmptyStockOperationSeries();
 
@@ -33,6 +33,9 @@ public class StockOperationSeries {
 
         if (isSoldAtLast(operations))
             return new SoldAtLastStockOperationSeries(prices, operations, sum);
+
+        if (hasNotSold)
+            return new NotSoldYetStockOperationSeries(prices, operations, sum);
 
         return new StockOperationSeries(prices, operations, sum, hasNotSold);
     }
@@ -58,9 +61,6 @@ public class StockOperationSeries {
     }
 
     public List<StockOperationSeries> towardsCompleteSeries() {
-        if (hasNotSold)
-            return towardsCompleteSeriesWith(SELL, PASS);
-
         if (isBuyWillBeALost())
             return towardsCompleteSeriesWith(PASS);
 
@@ -70,7 +70,7 @@ public class StockOperationSeries {
     protected ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
         return new ArrayList<StockOperationSeries>() {{
             for (final StockOperation nextOperation : nextOperations)
-                addAll(stockOperationSeriesWith(nextOperation).towardsCompleteSeries());
+                addAll(createWithNextOperation(nextOperation).towardsCompleteSeries());
         }};
     }
 
@@ -90,7 +90,7 @@ public class StockOperationSeries {
         return operations.size() == prices.size() - 1;
     }
 
-    private StockOperationSeries stockOperationSeriesWith(final StockOperation nextOperation) {
+    protected StockOperationSeries createWithNextOperation(final StockOperation nextOperation) {
         return create(
                 prices, new ArrayList<StockOperation>(operations) {{
                     add(nextOperation);
@@ -99,7 +99,7 @@ public class StockOperationSeries {
                 nextHasNotSold(nextOperation, hasNotSold));
     }
 
-    private int profitOf(StockOperation operation) {
+    protected int profitOf(StockOperation operation) {
         switch (operation) {
             case BUY:
                 return -priceOfNextOperation();
@@ -110,7 +110,7 @@ public class StockOperationSeries {
         }
     }
 
-    private Integer priceOfNextOperation() {
+    protected Integer priceOfNextOperation() {
         return prices.get(operations.size());
     }
 
