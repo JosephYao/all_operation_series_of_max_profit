@@ -43,19 +43,33 @@ public class StockOperationSeries {
         if (hasNoOperation())
             return towardsCompleteSeriesWith(PASS, BUY);
 
-        if (lastOperation() == BUY)
-            return towardsCompleteSeriesWith(SELL, PASS);
-
-        if (lastOperation() == SELL)
+        if (operationsOfLastEquals(1, SELL))
             return towardsCompleteSeriesWith(COOL);
 
-        if (operations.size() >= 2 && lastOperation() == PASS && operations.get(operations.size() - 2) == BUY)
+        if (operationsOfLastEquals(1, BUY))
             return towardsCompleteSeriesWith(SELL, PASS);
 
-        if (operations.size() == 3 && lastOperation() == PASS && operations.get(operations.size() - 2) == PASS && operations.get(operations.size() - 3) == BUY)
+        if (operationsOfLastEquals(2, BUY, PASS))
+            return towardsCompleteSeriesWith(SELL, PASS);
+
+        if (operationsOfLastEquals(3, BUY, PASS, PASS))
             return towardsCompleteSeriesWith(SELL);
 
         return towardsCompleteSeriesWith(PASS, BUY);
+    }
+
+    private boolean operationsOfLastEquals(int number, StockOperation... operations) {
+        if(this.operations.size() < number)
+            return false;
+
+        boolean result = true;
+        for (StockOperation operation : operations)
+            result &= operationOfLastEquals(number--, operation);
+        return result;
+    }
+
+    private boolean operationOfLastEquals(int position, StockOperation operation) {
+        return operations.get(operations.size() - position) == operation;
     }
 
     private ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
@@ -79,7 +93,4 @@ public class StockOperationSeries {
         return operations.size() == prices.size();
     }
 
-    private StockOperation lastOperation() {
-        return operations.get(operations.size() - 1);
-    }
 }
