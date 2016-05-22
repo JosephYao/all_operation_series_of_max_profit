@@ -3,11 +3,9 @@ package com.mobkata;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mobkata.ProfitableStockOperation.profitableStockOperation;
 import static com.mobkata.StockOperation.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.lastIndexOfSubList;
 
 public class StockOperationSeries {
 
@@ -38,30 +36,44 @@ public class StockOperationSeries {
         if (isSeriesComplete())
             return asList(this);
 
-        if (hasNoOperation())
-            return towardsCompleteSeriesWith(PASS, BUY);
-
-        if (operationsOfLastEquals(1, SELL))
+        if (isSellLastOperation())
             return towardsCompleteSeriesWith(COOL);
 
         if (hasNotSold)
             return towardsCompleteSeriesWith(SELL, PASS);
 
+        if (isBuyWillBeALost())
+            return towardsCompleteSeriesWith(PASS);
+
         return towardsCompleteSeriesWith(PASS, BUY);
     }
 
-    private boolean operationsOfLastEquals(int number, StockOperation... lastOperations) {
-        return lastIndexOfSubList(operations, asList(lastOperations)) == operations.size() - number;
+    private boolean isSellLastOperation() {
+        return operations.size() > 0 &&
+                operations.get(operations.size() - 1) == SELL;
     }
 
     private ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
         return new ArrayList<StockOperationSeries>() {{
-            for (final StockOperation nextOperation : nextOperations) {
-                if (nextOperation == BUY && operations.size() < prices.size() - 1 && profitableStockOperation(nextOperation, operations, prices).price() > prices.get(operations.size() + 1))
-                    continue;
+            for (final StockOperation nextOperation : nextOperations)
                 addAll(stockOperationSeriesWith(nextOperation).towardsCompleteSeries());
-            }
         }};
+    }
+
+    private boolean isBuyWillBeALost() {
+        return isLastOperation() || hasBuyAtHigherPrice();
+    }
+
+    private boolean hasBuyAtHigherPrice() {
+        return priceOfNextOperation() > priceOfNextNextOperation();
+    }
+
+    private Integer priceOfNextNextOperation() {
+        return prices.get(operations.size() + 1);
+    }
+
+    private boolean isLastOperation() {
+        return operations.size() == prices.size() - 1;
     }
 
     private StockOperationSeries stockOperationSeriesWith(final StockOperation nextOperation) {
@@ -70,8 +82,23 @@ public class StockOperationSeries {
                     add(nextOperation);
                 }},
                 prices,
-                sum + profitableStockOperation(nextOperation, operations, prices).profit(),
+                sum + profitOf(nextOperation),
                 nextHasNotSold(nextOperation, hasNotSold));
+    }
+
+    private int profitOf(StockOperation operation) {
+        switch (operation) {
+            case BUY:
+                return -priceOfNextOperation();
+            case SELL:
+                return priceOfNextOperation();
+            default:
+                return 0;
+        }
+    }
+
+    private Integer priceOfNextOperation() {
+        return prices.get(operations.size());
     }
 
     private boolean nextHasNotSold(StockOperation nextOperation, boolean hasNotSold) {
@@ -87,10 +114,6 @@ public class StockOperationSeries {
 
     private boolean hasNoPrice() {
         return prices.isEmpty();
-    }
-
-    private boolean hasNoOperation() {
-        return operations.isEmpty();
     }
 
     private boolean isSeriesComplete() {
