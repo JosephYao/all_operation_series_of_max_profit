@@ -18,7 +18,7 @@ public class NotSoldYetStockOperationSeries extends StockOperationSeries {
                     new ArrayList<StockOperation>(operations) {{
                         add(SELL);
                     }},
-                    sum + priceOfNextOperation(),
+                    sum + priceOfNextOperation(prices, operations),
                     false).towardsCompleteSeries());
             addAll(create(
                     prices,

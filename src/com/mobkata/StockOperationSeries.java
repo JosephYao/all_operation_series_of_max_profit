@@ -37,6 +37,9 @@ public class StockOperationSeries {
         if (hasNotSold)
             return new NotSoldYetStockOperationSeries(prices, operations, sum);
 
+        if (isBuyWillBeALost(prices, operations))
+            return new PassOnlyStockOperationSeries(prices, operations, sum, hasNotSold);
+
         return new StockOperationSeries(prices, operations, sum, hasNotSold);
     }
 
@@ -52,6 +55,26 @@ public class StockOperationSeries {
         return prices.isEmpty();
     }
 
+    private static boolean isBuyWillBeALost(List<Integer> prices, List<StockOperation> operations) {
+        return isLastOperation(prices, operations) || hasBuyAtHigherPrice(prices, operations);
+    }
+
+    private static boolean hasBuyAtHigherPrice(List<Integer> prices, List<StockOperation> operations) {
+        return priceOfNextOperation(prices, operations) > priceOfNextNextOperation(prices, operations);
+    }
+
+    private static Integer priceOfNextNextOperation(List<Integer> prices, List<StockOperation> operations) {
+        return prices.get(operations.size() + 1);
+    }
+
+    private static boolean isLastOperation(List<Integer> prices, List<StockOperation> operations) {
+        return operations.size() == prices.size() - 1;
+    }
+
+    protected static Integer priceOfNextOperation(List<Integer> prices, List<StockOperation> operations) {
+        return prices.get(operations.size());
+    }
+
     public Integer sum() {
         return sum;
     }
@@ -61,9 +84,6 @@ public class StockOperationSeries {
     }
 
     public List<StockOperationSeries> towardsCompleteSeries() {
-        if (isBuyWillBeALost())
-            return towardsCompleteSeriesWith(PASS);
-
         return towardsCompleteSeriesWith(PASS, BUY);
     }
 
@@ -72,22 +92,6 @@ public class StockOperationSeries {
             for (final StockOperation nextOperation : nextOperations)
                 addAll(createWithNextOperation(nextOperation).towardsCompleteSeries());
         }};
-    }
-
-    private boolean isBuyWillBeALost() {
-        return isLastOperation() || hasBuyAtHigherPrice();
-    }
-
-    private boolean hasBuyAtHigherPrice() {
-        return priceOfNextOperation() > priceOfNextNextOperation();
-    }
-
-    private Integer priceOfNextNextOperation() {
-        return prices.get(operations.size() + 1);
-    }
-
-    private boolean isLastOperation() {
-        return operations.size() == prices.size() - 1;
     }
 
     protected StockOperationSeries createWithNextOperation(final StockOperation nextOperation) {
@@ -102,16 +106,12 @@ public class StockOperationSeries {
     protected int profitOf(StockOperation operation) {
         switch (operation) {
             case BUY:
-                return -priceOfNextOperation();
+                return -priceOfNextOperation(prices, operations);
             case SELL:
-                return priceOfNextOperation();
+                return priceOfNextOperation(prices, operations);
             default:
                 return 0;
         }
-    }
-
-    protected Integer priceOfNextOperation() {
-        return prices.get(operations.size());
     }
 
     private boolean nextHasNotSold(StockOperation nextOperation, boolean hasNotSold) {
