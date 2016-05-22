@@ -10,20 +10,20 @@ public class GodOfStocks {
         List<StockOperationSeries> allStockOperationSeries = allStockOperationSeries(prices);
 
         int maxProfit = allStockOperationSeries.stream().
-                mapToInt(series -> series.sum()).max().orElse(0);
+                mapToInt(StockOperationSeries::sum).max().orElse(0);
 
         return allStockOperationSeries.stream().
                 filter(series -> series.sum() == maxProfit).
-                map(series -> series.operations()).
+                map(StockOperationSeries::operations).
                 collect(toList());
     }
 
     private List<StockOperationSeries> allStockOperationSeries(List<Integer> prices) {
-        return new StockOperationSeries(emptyList(), prices, emptyList()).towardsCompleteSeries();
+        return new StockOperationSeries(emptyList(), prices, 0, false).towardsCompleteSeries();
     }
 
     public int maxProfit(List<Integer> prices) {
         return allStockOperationSeries(prices).stream().
-                mapToInt(series -> series.sum()).max().orElse(0);
+                mapToInt(StockOperationSeries::sum).max().orElse(0);
     }
 }

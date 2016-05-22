@@ -54,6 +54,14 @@ public class AcceptanceTestFromWu {
                 asList(BUY, PASS, SELL, COOL, BUY, SELL),
                 asList(BUY, SELL, COOL, PASS, BUY, SELL)), prices);
     }
+    
+    @Test
+    public void long_but_easy_to_determine() {
+        List<Integer> prices = asList(1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1, 2,3,4,5,6,7,8,9,10);
+        assertEquals(18, godOfStocks.maxProfit(prices));
+        assertStockOperationEquals(asList(
+                asList(BUY, PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS, SELL, COOL, PASS, PASS, PASS, PASS, PASS, PASS, PASS, BUY, PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS, SELL)), prices);
+    }
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);

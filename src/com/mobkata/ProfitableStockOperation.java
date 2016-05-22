@@ -30,4 +30,7 @@ public class ProfitableStockOperation {
         return prices.get(operations.size());
     }
 
+    public Integer price() {
+        return price;
+    }
 }

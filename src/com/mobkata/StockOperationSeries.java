@@ -8,24 +8,23 @@ import static com.mobkata.StockOperation.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.lastIndexOfSubList;
-import static java.util.stream.IntStream.range;
 
 public class StockOperationSeries {
 
     private final List<Integer> prices;
     private final List<StockOperation> operations;
-    private final List<ProfitableStockOperation> profitableStockOperations;
+    private final Integer sum;
+    private boolean hasNotSold;
 
-    public StockOperationSeries(List<StockOperation> operations, List<Integer> prices, List<ProfitableStockOperation> profitableStockOperations) {
+    public StockOperationSeries(List<StockOperation> operations, List<Integer> prices, Integer sum, boolean hasNotSold) {
         this.operations = operations;
         this.prices = prices;
-        this.profitableStockOperations = profitableStockOperations;
+        this.sum = sum;
+        this.hasNotSold = hasNotSold;
     }
 
     public Integer sum() {
-        return profitableStockOperations.stream().
-                mapToInt(profitableStockOperation -> profitableStockOperation.profit()).
-                sum();
+        return sum;
     }
 
     public List<StockOperation> operations() {
@@ -45,22 +44,10 @@ public class StockOperationSeries {
         if (operationsOfLastEquals(1, SELL))
             return towardsCompleteSeriesWith(COOL);
 
-        if (hasNotSold())
+        if (hasNotSold)
             return towardsCompleteSeriesWith(SELL, PASS);
 
         return towardsCompleteSeriesWith(PASS, BUY);
-    }
-
-    private boolean hasNotSold() {
-        return range(1, operations.size() + 1).anyMatch(number ->
-                        operationsOfLastEquals(number, lastOperationsOfNotSold(number)));
-    }
-
-    private StockOperation[] lastOperationsOfNotSold(int number) {
-        StockOperation[] lastOperations = new StockOperation[number];
-        lastOperations[0] = BUY;
-        range(1, number).forEach(i -> lastOperations[i] = PASS);
-        return lastOperations;
     }
 
     private boolean operationsOfLastEquals(int number, StockOperation... lastOperations) {
@@ -69,8 +56,11 @@ public class StockOperationSeries {
 
     private ArrayList<StockOperationSeries> towardsCompleteSeriesWith(final StockOperation... nextOperations) {
         return new ArrayList<StockOperationSeries>() {{
-            for (final StockOperation nextOperation : nextOperations)
+            for (final StockOperation nextOperation : nextOperations) {
+                if (nextOperation == BUY && operations.size() < prices.size() - 1 && profitableStockOperation(nextOperation, operations, prices).price() > prices.get(operations.size() + 1))
+                    continue;
                 addAll(stockOperationSeriesWith(nextOperation).towardsCompleteSeries());
+            }
         }};
     }
 
@@ -80,9 +70,19 @@ public class StockOperationSeries {
                     add(nextOperation);
                 }},
                 prices,
-                new ArrayList<ProfitableStockOperation>(profitableStockOperations) {{
-                    add(profitableStockOperation(nextOperation, operations, prices));
-                }});
+                sum + profitableStockOperation(nextOperation, operations, prices).profit(),
+                nextHasNotSold(nextOperation, hasNotSold));
+    }
+
+    private boolean nextHasNotSold(StockOperation nextOperation, boolean hasNotSold) {
+        switch (nextOperation) {
+            case BUY:
+                return true;
+            case SELL:
+                return false;
+            default:
+                return hasNotSold;
+        }
     }
 
     private boolean hasNoPrice() {
