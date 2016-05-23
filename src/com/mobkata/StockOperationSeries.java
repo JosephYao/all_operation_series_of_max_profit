@@ -17,18 +17,7 @@ public abstract class StockOperationSeries {
     }
 
     public static List<StockOperationSeries> allStockOperationSeries(List<Integer> prices) {
-        return create(prices, emptyList(), 0).towardsCompleteSeries();
-    }
-
-    private static StockOperationSeries create(List<Integer> prices, List<StockOperation> operations, Integer sum) {
-        if (hasNoPrice(prices))
-            return new EmptyStockOperationSeries();
-
-        return new CanPassAndBuyStockOperationSeries(prices, operations, sum);
-    }
-
-    private static boolean hasNoPrice(List<Integer> prices) {
-        return prices.isEmpty();
+        return new CanPassAndBuyStockOperationSeries(prices, emptyList(), 0).towardsCompleteSeries();
     }
 
     protected Integer priceOfNextOperation() {
@@ -44,10 +33,14 @@ public abstract class StockOperationSeries {
     }
 
     public List<StockOperationSeries> towardsCompleteSeries() {
-        if (operations.size() == prices.size())
+        if (isComplete())
             return new CompleteStockOperationSeries(operations, sum).towardsCompleteSeries();
 
         return fromIncompleteToCompleteSeries();
+    }
+
+    private boolean isComplete() {
+        return operations.size() == prices.size();
     }
 
     public List<StockOperationSeries> fromIncompleteToCompleteSeries() {

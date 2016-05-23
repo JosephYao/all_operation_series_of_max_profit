@@ -36,16 +36,28 @@ public class CanPassAndBuyStockOperationSeries extends StockOperationSeries {
         return isLastOperation() || hasBuyAtHigherPrice();
     }
 
-    private boolean hasBuyAtHigherPrice() {
-        return priceOfNextOperation() > priceOfNextNextOperation();
-    }
+    @Override
+    public List<StockOperationSeries> towardsCompleteSeries() {
+        if (hasNoPrice())
+            return new EmptyStockOperationSeries().towardsCompleteSeries();
 
-    private Integer priceOfNextNextOperation() {
-        return prices.get(operations.size() + 1);
+        return super.towardsCompleteSeries();
     }
 
     private boolean isLastOperation() {
         return operations.size() == prices.size() - 1;
+    }
+
+    private boolean hasBuyAtHigherPrice() {
+        return priceOfNextOperation() > priceOfNextNextOperation();
+    }
+
+    private boolean hasNoPrice() {
+        return prices.isEmpty();
+    }
+
+    private Integer priceOfNextNextOperation() {
+        return prices.get(operations.size() + 1);
     }
 
 }
