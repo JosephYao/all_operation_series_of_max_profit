@@ -19,13 +19,12 @@ public class NotSoldYetStockOperationSeries extends StockOperationSeries {
                         add(SELL);
                     }},
                     sum + priceOfNextOperation()).towardsCompleteSeries());
-            addAll(createTowardsCompleteSeries(
+            addAll(new NotSoldYetStockOperationSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{
                         add(PASS);
                     }},
-                    sum,
-                    true));
+                    sum).towardsCompleteSeries());
         }};
     }
 }

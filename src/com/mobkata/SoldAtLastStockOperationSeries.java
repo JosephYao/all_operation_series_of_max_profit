@@ -16,7 +16,7 @@ public class SoldAtLastStockOperationSeries extends StockOperationSeries {
                 prices, new ArrayList<StockOperation>(operations) {{
                     add(COOL);
                 }},
-                sum,
-                false);
+                sum
+        );
     }
 }

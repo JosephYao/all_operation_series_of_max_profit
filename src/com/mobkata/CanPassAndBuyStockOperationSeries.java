@@ -19,15 +19,14 @@ public class CanPassAndBuyStockOperationSeries extends StockOperationSeries {
                     new ArrayList<StockOperation>(operations) {{
                         add(PASS);
                     }},
-                    sum,
-                    false));
-            addAll(createTowardsCompleteSeries(
+                    sum
+            ));
+            addAll(new NotSoldYetStockOperationSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{
                         add(BUY);
                     }},
-                    sum - priceOfNextOperation(),
-                    true));
+                    sum - priceOfNextOperation()).towardsCompleteSeries());
         }};
     }
 }

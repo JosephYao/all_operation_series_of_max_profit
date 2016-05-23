@@ -17,22 +17,19 @@ public abstract class StockOperationSeries {
     }
 
     public static List<StockOperationSeries> allStockOperationSeries(List<Integer> prices) {
-        return create(prices, emptyList(), 0, false).towardsCompleteSeries();
+        return create(prices, emptyList(), 0).towardsCompleteSeries();
     }
 
-    protected static List<StockOperationSeries> createTowardsCompleteSeries(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
-        return create(prices, operations, sum, hasNotSold).towardsCompleteSeries();
+    protected static List<StockOperationSeries> createTowardsCompleteSeries(List<Integer> prices, List<StockOperation> operations, Integer sum) {
+        return create(prices, operations, sum).towardsCompleteSeries();
     }
 
-    private static StockOperationSeries create(List<Integer> prices, List<StockOperation> operations, Integer sum, boolean hasNotSold) {
+    private static StockOperationSeries create(List<Integer> prices, List<StockOperation> operations, Integer sum) {
         if (hasNoPrice(prices))
             return new EmptyStockOperationSeries();
 
         if (isCompleteSeries(prices, operations))
             return new CompleteStockOperationSeries(operations, sum);
-
-        if (hasNotSold)
-            return new NotSoldYetStockOperationSeries(prices, operations, sum);
 
         if (isBuyWillBeALost(prices, operations))
             return new CanPassOnlyStockOperationSeries(prices, operations, sum);

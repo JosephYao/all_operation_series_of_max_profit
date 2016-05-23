@@ -17,7 +17,7 @@ public class CanPassOnlyStockOperationSeries extends StockOperationSeries {
                 new ArrayList<StockOperation>(operations) {{
                     add(PASS);
                 }},
-                sum,
-                false);
+                sum
+        );
     }
 }
