@@ -20,53 +20,19 @@ public abstract class StockOperationSeries {
         return create(prices, emptyList(), 0).towardsCompleteSeries();
     }
 
-    protected static List<StockOperationSeries> createTowardsCompleteSeries(List<Integer> prices, List<StockOperation> operations, Integer sum) {
-        return create(prices, operations, sum).towardsCompleteSeries();
-    }
-
     private static StockOperationSeries create(List<Integer> prices, List<StockOperation> operations, Integer sum) {
         if (hasNoPrice(prices))
             return new EmptyStockOperationSeries();
 
-        if (isCompleteSeries(prices, operations))
-            return new CompleteStockOperationSeries(operations, sum);
-
-        if (isBuyWillBeALost(prices, operations))
-            return new CanPassOnlyStockOperationSeries(prices, operations, sum);
-
         return new CanPassAndBuyStockOperationSeries(prices, operations, sum);
-    }
-
-    private static boolean isCompleteSeries(List<Integer> prices, List<StockOperation> operations) {
-        return operations.size() == prices.size();
     }
 
     private static boolean hasNoPrice(List<Integer> prices) {
         return prices.isEmpty();
     }
 
-    private static boolean isBuyWillBeALost(List<Integer> prices, List<StockOperation> operations) {
-        return isLastOperation(prices, operations) || hasBuyAtHigherPrice(prices, operations);
-    }
-
-    private static boolean hasBuyAtHigherPrice(List<Integer> prices, List<StockOperation> operations) {
-        return priceOfNextOperation(prices, operations) > priceOfNextNextOperation(prices, operations);
-    }
-
-    private static Integer priceOfNextNextOperation(List<Integer> prices, List<StockOperation> operations) {
-        return prices.get(operations.size() + 1);
-    }
-
-    private static boolean isLastOperation(List<Integer> prices, List<StockOperation> operations) {
-        return operations.size() == prices.size() - 1;
-    }
-
-    private static Integer priceOfNextOperation(List<Integer> prices, List<StockOperation> operations) {
-        return prices.get(operations.size());
-    }
-
     protected Integer priceOfNextOperation() {
-        return priceOfNextOperation(prices, operations);
+        return prices.get(operations.size());
     }
 
     public Integer sum() {
