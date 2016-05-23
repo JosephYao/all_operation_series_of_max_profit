@@ -12,7 +12,7 @@ public class CanPassAndBuyStockOperationSeries extends StockOperationSeries {
     }
 
     @Override
-    public List<StockOperationSeries> towardsCompleteSeries() {
+    public List<StockOperationSeries> fromIncompleteToCompleteSeries() {
         return new ArrayList<StockOperationSeries>() {{
             addAll(createTowardsCompleteSeries(
                     prices,

@@ -11,15 +11,14 @@ public class NotSoldYetStockOperationSeries extends StockOperationSeries {
     }
 
     @Override
-    public List<StockOperationSeries> towardsCompleteSeries() {
+    public List<StockOperationSeries> fromIncompleteToCompleteSeries() {
         return new ArrayList<StockOperationSeries>() {{
-            addAll(createTowardsCompleteSeries(
+            addAll(new SoldAtLastStockOperationSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{
                         add(SELL);
                     }},
-                    sum + priceOfNextOperation(),
-                    false));
+                    sum + priceOfNextOperation()).towardsCompleteSeries());
             addAll(createTowardsCompleteSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{

@@ -14,4 +14,5 @@ public class EmptyStockOperationSeries extends StockOperationSeries {
     public List<StockOperationSeries> towardsCompleteSeries() {
         return emptyList();
     }
+
 }

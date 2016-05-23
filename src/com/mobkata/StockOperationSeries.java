@@ -2,7 +2,6 @@ package com.mobkata;
 
 import java.util.List;
 
-import static com.mobkata.StockOperation.SELL;
 import static java.util.Collections.emptyList;
 
 public abstract class StockOperationSeries {
@@ -32,9 +31,6 @@ public abstract class StockOperationSeries {
         if (isCompleteSeries(prices, operations))
             return new CompleteStockOperationSeries(operations, sum);
 
-        if (isSoldAtLast(operations))
-            return new SoldAtLastStockOperationSeries(prices, operations, sum);
-
         if (hasNotSold)
             return new NotSoldYetStockOperationSeries(prices, operations, sum);
 
@@ -42,10 +38,6 @@ public abstract class StockOperationSeries {
             return new CanPassOnlyStockOperationSeries(prices, operations, sum);
 
         return new CanPassAndBuyStockOperationSeries(prices, operations, sum);
-    }
-
-    private static boolean isSoldAtLast(List<StockOperation> operations) {
-        return operations.size() > 0 && operations.get(operations.size() - 1) == SELL;
     }
 
     private static boolean isCompleteSeries(List<Integer> prices, List<StockOperation> operations) {
@@ -88,6 +80,15 @@ public abstract class StockOperationSeries {
         return operations;
     }
 
-    public abstract List<StockOperationSeries> towardsCompleteSeries();
+    public List<StockOperationSeries> towardsCompleteSeries() {
+        if (operations.size() == prices.size())
+            return new CompleteStockOperationSeries(operations, sum).towardsCompleteSeries();
+
+        return fromIncompleteToCompleteSeries();
+    }
+
+    public List<StockOperationSeries> fromIncompleteToCompleteSeries() {
+        throw new UnsupportedOperationException();
+    }
 
 }
