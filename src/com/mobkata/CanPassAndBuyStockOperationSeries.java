@@ -7,14 +7,14 @@ import static com.mobkata.StockOperation.BUY;
 import static com.mobkata.StockOperation.PASS;
 
 public class CanPassAndBuyStockOperationSeries extends StockOperationSeries {
-    public CanPassAndBuyStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum) {
-        super(prices, operations, sum);
+    public CanPassAndBuyStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum, Account account) {
+        super(prices, operations, sum, account);
     }
 
     @Override
     public List<StockOperationSeries> fromIncompleteToCompleteSeries() {
         if (isBuyWillBeALost())
-            return new CanPassOnlyStockOperationSeries(prices, operations, sum).towardsCompleteSeries();
+            return new CanPassOnlyStockOperationSeries(prices, operations, sum, account).towardsCompleteSeries();
 
         return new ArrayList<StockOperationSeries>() {{
             addAll(new CanPassAndBuyStockOperationSeries(
@@ -22,13 +22,15 @@ public class CanPassAndBuyStockOperationSeries extends StockOperationSeries {
                     new ArrayList<StockOperation>(operations) {{
                         add(PASS);
                     }},
-                    sum).towardsCompleteSeries());
+                    sum,
+                    account).towardsCompleteSeries());
             addAll(new NotSoldYetStockOperationSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{
                         add(BUY);
                     }},
-                    sum - priceOfNextOperation()).towardsCompleteSeries());
+                    sum - priceOfNextOperation(),
+                    account.buy(priceOfNextOperation())).towardsCompleteSeries());
         }};
     }
 

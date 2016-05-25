@@ -6,8 +6,8 @@ import java.util.List;
 import static com.mobkata.StockOperation.COOL;
 
 public class SoldAtLastStockOperationSeries extends StockOperationSeries {
-    public SoldAtLastStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum) {
-        super(prices, operations, sum);
+    public SoldAtLastStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum, Account account) {
+        super(prices, operations, sum, account);
     }
 
     @Override
@@ -16,6 +16,6 @@ public class SoldAtLastStockOperationSeries extends StockOperationSeries {
                 prices, new ArrayList<StockOperation>(operations) {{
                     add(COOL);
                 }},
-                sum).towardsCompleteSeries();
+                sum, account).towardsCompleteSeries();
     }
 }

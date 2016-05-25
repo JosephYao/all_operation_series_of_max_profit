@@ -6,8 +6,8 @@ import java.util.List;
 import static com.mobkata.StockOperation.PASS;
 
 public class CanPassOnlyStockOperationSeries extends StockOperationSeries {
-    public CanPassOnlyStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum) {
-        super(prices, operations, sum);
+    public CanPassOnlyStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum, Account account) {
+        super(prices, operations, sum, account);
     }
 
     @Override
@@ -17,6 +17,6 @@ public class CanPassOnlyStockOperationSeries extends StockOperationSeries {
                 new ArrayList<StockOperation>(operations) {{
                     add(PASS);
                 }},
-                sum).towardsCompleteSeries();
+                sum, account).towardsCompleteSeries();
     }
 }

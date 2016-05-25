@@ -7,15 +7,17 @@ public class Account {
         profit = 0;
     }
 
-    public void buy(int price) {
+    public Account buy(int price) {
         profit -= price;
+        return this;
     }
 
     public int profit() {
         return profit;
     }
 
-    public void sell(int price) {
+    public Account sell(int price) {
         profit += price;
+        return this;
     }
 }
