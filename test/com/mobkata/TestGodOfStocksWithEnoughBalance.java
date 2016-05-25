@@ -10,11 +10,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.hasItem;
 
-public class TestGodOfStocks {
+public class TestGodOfStocksWithEnoughBalance {
 
     private static final int HIGHER_PRICE = 10;
     private static final int LOWER_PRICE = 1;
-    GodOfStocks godOfStocks = new GodOfStocks();
+    GodOfStocks godOfStocks = new GodOfStocks(0);
 
     @Test
     public void no_operation_needed_when_no_stock_price() {

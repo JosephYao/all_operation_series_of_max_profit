@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 
 public class AcceptanceTestFromSun {
 
-    GodOfStocks godOfStocks = new GodOfStocks();
+    GodOfStocks godOfStocks = new GodOfStocks(0);
 
     @Test
     public void two_transactions() {

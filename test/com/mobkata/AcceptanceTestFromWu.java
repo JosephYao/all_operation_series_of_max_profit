@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 
 public class AcceptanceTestFromWu {
 
-    GodOfStocks godOfStocks = new GodOfStocks();
+    GodOfStocks godOfStocks = new GodOfStocks(0);
 
     @Test
     public void continuously_raise() {

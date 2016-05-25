@@ -6,6 +6,10 @@ import static com.mobkata.StockOperationSeries.allStockOperationSeries;
 import static java.util.stream.Collectors.toList;
 
 public class GodOfStocks {
+    public GodOfStocks(int balance) {
+
+    }
+
     public List<List<StockOperation>> operationsForMaxProfit(List<Integer> prices) {
         List<StockOperationSeries> allStockOperationSeries = allStockOperationSeries(prices);
 
