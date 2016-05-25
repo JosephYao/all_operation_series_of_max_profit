@@ -14,4 +14,8 @@ public class Account {
     public int profit() {
         return profit;
     }
+
+    public void sell(int price) {
+        profit += price;
+    }
 }
