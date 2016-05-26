@@ -6,8 +6,8 @@ import java.util.List;
 import static com.mobkata.StockOperation.*;
 
 public class NotSoldYetStockOperationSeries extends StockOperationSeries {
-    public NotSoldYetStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Integer sum, Account account) {
-        super(prices, operations, sum, account);
+    public NotSoldYetStockOperationSeries(List<Integer> prices, List<StockOperation> operations, Account account) {
+        super(prices, operations, account);
     }
 
     @Override
@@ -18,14 +18,12 @@ public class NotSoldYetStockOperationSeries extends StockOperationSeries {
                     new ArrayList<StockOperation>(operations) {{
                         add(SELL);
                     }},
-                    sum + priceOfNextOperation(),
                     account.sell(priceOfNextOperation())).towardsCompleteSeries());
             addAll(new NotSoldYetStockOperationSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{
                         add(PASS);
                     }},
-                    sum,
                     account).towardsCompleteSeries());
         }};
     }

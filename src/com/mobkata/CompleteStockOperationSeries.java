@@ -6,8 +6,8 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 public class CompleteStockOperationSeries extends StockOperationSeries {
-    public CompleteStockOperationSeries(List<StockOperation> operations, Integer sum, Account account) {
-        super(emptyList(), operations, sum, account);
+    public CompleteStockOperationSeries(List<StockOperation> operations, Account account) {
+        super(emptyList(), operations, account);
     }
 
     @Override
