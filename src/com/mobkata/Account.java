@@ -4,12 +4,15 @@ public class Account {
     private int profit;
 
     public Account(int balance) {
-        profit = 0;
+        this(0, 0);
+    }
+
+    public Account(int balance, int profit) {
+        this.profit = profit;
     }
 
     public Account buy(int price) {
-        profit -= price;
-        return this;
+        return new Account(0, profit - price);
     }
 
     public int profit() {
