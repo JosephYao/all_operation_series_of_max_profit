@@ -2,12 +2,11 @@ package com.mobkata;
 
 import org.junit.Test;
 
+import static com.mobkata.TestAccountHelper.*;
 import static org.junit.Assert.assertEquals;
 
 public class TestAccountWithEnoughBalance {
 
-    private static final int PRICE = 10;
-    private static final int ENOUGH_BALANCE = 100;
     Account account = new Account(ENOUGH_BALANCE);
 
     @Test

@@ -20,7 +20,6 @@ public class Account {
     }
 
     public Account sell(int price) {
-        profit += price;
-        return this;
+        return new Account(0, profit + price);
     }
 }
