@@ -16,20 +16,25 @@ public class CanPassAndBuyStockOperationSeries extends StockOperationSeries {
         if (isBuyWillBeALost())
             return new CanPassOnlyStockOperationSeries(prices, operations, account.pass()).towardsCompleteSeries();
 
-        return new ArrayList<StockOperationSeries>() {{
+        List<StockOperationSeries> result = new ArrayList<StockOperationSeries>(){{
             addAll(new CanPassAndBuyStockOperationSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{
                         add(PASS);
                     }},
                     account.pass()).towardsCompleteSeries());
-            addAll(new NotSoldYetStockOperationSeries(
+        }};
+
+        account.buy(priceOfNextOperation(), account -> {
+            result.addAll(new NotSoldYetStockOperationSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{
                         add(BUY);
                     }},
-                    account.buy(priceOfNextOperation())).towardsCompleteSeries());
-        }};
+                    account).towardsCompleteSeries());
+        });
+
+        return result;
     }
 
     private boolean isBuyWillBeALost() {

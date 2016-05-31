@@ -1,5 +1,7 @@
 package com.mobkata;
 
+import java.util.function.Consumer;
+
 public class Account {
     private int profit;
     private final int soldPrice;
@@ -13,8 +15,10 @@ public class Account {
         this.soldPrice = soldPrice;
     }
 
-    public Account buy(int price) {
-        return new Account(0, profit - price, 0);
+    public Account buy(int price, Consumer<Account> consumer) {
+        Account account = new Account(0, profit - price, 0);
+        consumer.accept(account);
+        return account;
     }
 
     public int profit() {
@@ -27,5 +31,9 @@ public class Account {
 
     public Account pass() {
         return new Account(0, profit + soldPrice, 0);
+    }
+
+    public Account buy(int price) {
+        return buy(price, account -> {});
     }
 }
