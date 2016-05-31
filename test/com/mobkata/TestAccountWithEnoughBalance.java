@@ -22,10 +22,10 @@ public class TestAccountWithEnoughBalance {
     }
 
     @Test
-    public void profit_when_after_sell() {
+    public void profit_when_after_sell_and_pass_one_day() {
         account = account.buy(PRICE);
 
-        account = account.sell(PRICE + 1);
+        account = account.sell(PRICE + 1).pass();
 
         assertEquals(1, account.profit());
     }

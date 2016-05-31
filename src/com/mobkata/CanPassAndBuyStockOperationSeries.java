@@ -14,7 +14,7 @@ public class CanPassAndBuyStockOperationSeries extends StockOperationSeries {
     @Override
     public List<StockOperationSeries> fromIncompleteToCompleteSeries() {
         if (isBuyWillBeALost())
-            return new CanPassOnlyStockOperationSeries(prices, operations, account).towardsCompleteSeries();
+            return new CanPassOnlyStockOperationSeries(prices, operations, account.pass()).towardsCompleteSeries();
 
         return new ArrayList<StockOperationSeries>() {{
             addAll(new CanPassAndBuyStockOperationSeries(
@@ -22,7 +22,7 @@ public class CanPassAndBuyStockOperationSeries extends StockOperationSeries {
                     new ArrayList<StockOperation>(operations) {{
                         add(PASS);
                     }},
-                    account).towardsCompleteSeries());
+                    account.pass()).towardsCompleteSeries());
             addAll(new NotSoldYetStockOperationSeries(
                     prices,
                     new ArrayList<StockOperation>(operations) {{

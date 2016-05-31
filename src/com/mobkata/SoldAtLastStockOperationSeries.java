@@ -16,6 +16,6 @@ public class SoldAtLastStockOperationSeries extends StockOperationSeries {
                 prices, new ArrayList<StockOperation>(operations) {{
                     add(COOL);
                 }},
-                account).towardsCompleteSeries();
+                account.pass()).towardsCompleteSeries();
     }
 }

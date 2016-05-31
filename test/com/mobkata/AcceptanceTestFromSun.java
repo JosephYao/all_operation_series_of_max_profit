@@ -16,9 +16,14 @@ public class AcceptanceTestFromSun {
 
     @Test
     public void two_transactions() {
-        List<Integer> prices = asList(1, 4, 3, 2, 5);
+        List<Integer> prices = asList(1, 4, 3, 2, 5, 1);
+
         assertEquals(6, godOfStocks.maxProfit(prices));
-        assertStockOperationEquals(asList(asList(BUY, SELL, COOL, BUY, SELL)), prices);
+        assertStockOperationEquals(
+                asList(
+                        asList(BUY, SELL, COOL, BUY, SELL, COOL)
+                ),
+                prices);
     }
 
     @Test

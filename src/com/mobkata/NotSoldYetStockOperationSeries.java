@@ -24,7 +24,7 @@ public class NotSoldYetStockOperationSeries extends StockOperationSeries {
                     new ArrayList<StockOperation>(operations) {{
                         add(PASS);
                     }},
-                    account).towardsCompleteSeries());
+                    account.pass()).towardsCompleteSeries());
         }};
     }
 }

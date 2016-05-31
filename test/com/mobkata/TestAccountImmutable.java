@@ -22,11 +22,21 @@ public class TestAccountImmutable {
     public void account_is_immutable_after_sell() {
         afterBuyWith(PRICE);
 
-        Account afterSell = afterBuy.sell(PRICE + 1);
+        afterBuy.sell(PRICE + 1);
 
         assertEquals(0, initial.profit());
         assertEquals(-PRICE, afterBuy.profit());
-        assertEquals(1, afterSell.profit());
+    }
+
+    @Test
+    public void account_is_immutable_after_pass() {
+        afterBuyWith(PRICE);
+
+        Account afterSell = afterBuy.sell(PRICE + 1);
+        Account afterPass = afterSell.pass();
+
+        assertEquals(-PRICE, afterSell.profit());
+        assertEquals(1, afterPass.profit());
     }
 
     private void afterBuyWith(int price) {

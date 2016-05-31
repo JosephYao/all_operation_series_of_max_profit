@@ -17,6 +17,6 @@ public class CanPassOnlyStockOperationSeries extends StockOperationSeries {
                 new ArrayList<StockOperation>(operations) {{
                     add(PASS);
                 }},
-                account).towardsCompleteSeries();
+                account.pass()).towardsCompleteSeries();
     }
 }

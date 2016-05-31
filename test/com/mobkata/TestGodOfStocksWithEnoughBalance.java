@@ -43,8 +43,7 @@ public class TestGodOfStocksWithEnoughBalance {
     public void buy_sell_and_pass_pass_both_can_get_0_profit_when_two_price_identical() {
         assertStockOperationEquals(
                 asList(
-                        asList(PASS, PASS),
-                        asList(BUY, SELL)
+                        asList(PASS, PASS)
                 ),
                 asList(LOWER_PRICE, LOWER_PRICE)
         );
@@ -54,9 +53,9 @@ public class TestGodOfStocksWithEnoughBalance {
     public void buy_sell_can_get_max_profit_when_first_price_lower_than_higher_price() {
         assertStockOperationEquals(
                 asList(
-                        asList(BUY, SELL)
+                        asList(BUY, SELL, COOL)
                 ),
-                asList(LOWER_PRICE, HIGHER_PRICE)
+                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE)
         );
     }
     
@@ -72,9 +71,14 @@ public class TestGodOfStocksWithEnoughBalance {
 
     @Test
     public void can_buy_after_pass() {
-        List<Integer> prices = asList(LOWER_PRICE + 1, LOWER_PRICE, HIGHER_PRICE);
+        List<Integer> prices = asList(LOWER_PRICE + 1, LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE);
+
         assertEquals(HIGHER_PRICE - LOWER_PRICE, godOfStocks.maxProfit(prices));
-        assertStockOperationEquals(asList(asList(PASS, BUY, SELL)),prices);
+        assertStockOperationEquals(
+                asList(
+                        asList(PASS, BUY, SELL, COOL)
+                ),
+                prices);
     }
 
     @Test
@@ -91,24 +95,34 @@ public class TestGodOfStocksWithEnoughBalance {
     public void can_buy_after_cool() {
         assertStockOperationEquals(
                 asList(
-                        asList(BUY, SELL, COOL, BUY, SELL)
+                        asList(BUY, SELL, COOL, BUY, SELL, COOL)
                 ),
-                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE, LOWER_PRICE, HIGHER_PRICE)
+                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE, LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE)
         );
     }
 
     @Test
     public void can_pass_after_buy() {
-        List<Integer> prices = asList(LOWER_PRICE, LOWER_PRICE + 1, HIGHER_PRICE);
+        List<Integer> prices = asList(LOWER_PRICE, LOWER_PRICE + 1, HIGHER_PRICE, LOWER_PRICE);
+
         assertEquals(HIGHER_PRICE - LOWER_PRICE, godOfStocks.maxProfit(prices));
-        assertStockOperationEquals(asList(asList(BUY, PASS, SELL)),prices);
+        assertStockOperationEquals(
+                asList(
+                        asList(BUY, PASS, SELL, COOL)
+                ),
+                prices);
     }
 
     @Test
     public void can_pass_twice_after_buy() {
-        List<Integer> prices = asList(LOWER_PRICE, LOWER_PRICE + 1, LOWER_PRICE + 1, HIGHER_PRICE);
+        List<Integer> prices = asList(LOWER_PRICE, LOWER_PRICE + 1, LOWER_PRICE + 1, HIGHER_PRICE, LOWER_PRICE);
+
         assertEquals(HIGHER_PRICE - LOWER_PRICE, godOfStocks.maxProfit(prices));
-        assertStockOperationEquals(asList(asList(BUY, PASS, PASS, SELL)),prices);
+        assertStockOperationEquals(
+                asList(
+                        asList(BUY, PASS, PASS, SELL, COOL)
+                ),
+                prices);
     }
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
