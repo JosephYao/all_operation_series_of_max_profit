@@ -1,5 +1,7 @@
 package com.mobkata;
 
+import com.mobkata.account.Account;
+
 import java.util.List;
 
 import static java.lang.Integer.MAX_VALUE;

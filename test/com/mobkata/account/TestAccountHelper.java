@@ -1,4 +1,4 @@
-package com.mobkata;
+package com.mobkata.account;
 
 public class TestAccountHelper {
     public static final int ENOUGH_BALANCE = 100;

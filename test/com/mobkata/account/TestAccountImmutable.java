@@ -1,8 +1,8 @@
-package com.mobkata;
+package com.mobkata.account;
 
 import org.junit.Test;
 
-import static com.mobkata.TestAccountHelper.*;
+import static com.mobkata.account.TestAccountHelper.*;
 import static org.junit.Assert.assertEquals;
 
 public class TestAccountImmutable {

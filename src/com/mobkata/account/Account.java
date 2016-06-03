@@ -1,4 +1,4 @@
-package com.mobkata;
+package com.mobkata.account;
 
 import java.util.function.Consumer;
 

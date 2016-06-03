@@ -1,13 +1,19 @@
-package com.mobkata;
+package com.mobkata.account;
 
 import org.junit.Test;
 
-import static com.mobkata.TestAccountHelper.*;
+import static com.mobkata.account.TestAccountHelper.ENOUGH_BALANCE;
+import static com.mobkata.account.TestAccountHelper.PRICE;
 import static org.junit.Assert.assertEquals;
 
-public class TestAccountProfitAfterSold {
+public class TestAccountProfitWithEnoughBalance {
 
     Account account = new Account(ENOUGH_BALANCE);
+
+    @Test
+    public void profit_is_0_for_a_new_account() {
+        assertEquals(0, account.profit());
+    }
 
     @Test
     public void profit_not_changed_right_after_sold() {
