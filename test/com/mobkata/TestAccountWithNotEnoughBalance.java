@@ -12,14 +12,24 @@ import static org.mockito.Mockito.verify;
 
 public class TestAccountWithNotEnoughBalance {
 
+    Consumer mockConsumer = mock(Consumer.class);
+
     @Test
     public void buy_with_not_enough_balance_should_not_call_the_consumer() {
         Account account = new Account(0);
-        Consumer mockConsumer = mock(Consumer.class);
 
         account.buy(PRICE, mockConsumer);
 
         verify(mockConsumer, never()).accept(any(Account.class));
+    }
+
+    @Test
+    public void buy_with_enough_balance_should_call_the_consumer() {
+        Account account = new Account(ENOUGH_BALANCE);
+
+        account.buy(PRICE, mockConsumer);
+
+        verify(mockConsumer).accept(any(Account.class));
     }
 
 }
