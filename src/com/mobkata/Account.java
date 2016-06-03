@@ -5,20 +5,25 @@ import java.util.function.Consumer;
 public class Account {
     private int profit;
     private final int soldPrice;
+    private int balance;
 
     public Account(int balance) {
-        this(0, 0, 0);
+        this(balance, 0, 0);
     }
 
     public Account(int balance, int profit, int soldPrice) {
+        this.balance = balance;
         this.profit = profit;
         this.soldPrice = soldPrice;
     }
 
     public Account buy(int price, Consumer<Account> consumer) {
-        Account account = new Account(0, profit - price, 0);
-        consumer.accept(account);
-        return account;
+        if (price <= balance) {
+            Account account = new Account(balance, profit - price, 0);
+            consumer.accept(account);
+            return account;
+        }
+        return new Account(balance, profit, soldPrice);
     }
 
     public int profit() {
@@ -26,11 +31,11 @@ public class Account {
     }
 
     public Account sell(int price) {
-        return new Account(0, profit, price);
+        return new Account(balance, profit, price);
     }
 
     public Account pass() {
-        return new Account(0, profit + soldPrice, 0);
+        return new Account(balance, profit + soldPrice, 0);
     }
 
     public Account buy(int price) {
