@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestAccountProfitWithEnoughBalance {
 
-    Account account = new Account(ENOUGH_BALANCE);
+    TestAccountHelper account = new TestAccountHelper(ENOUGH_BALANCE);
 
     @Test
     public void profit_is_0_for_a_new_account() {
@@ -27,7 +27,7 @@ public class TestAccountProfitWithEnoughBalance {
 
     @Test
     public void profit_not_changed_if_pass_after_buy() {
-        assertEquals(-PRICE, account.buy(PRICE).pass().profit());
+        assertEquals(-PRICE, account.buyWithoutConsumer(PRICE).pass().profit());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class TestAccountProfitWithEnoughBalance {
     }
 
     private Account sellWithProfit(int profit) {
-        return account.buy(PRICE).sell(PRICE + profit);
+        return account.buyWithoutConsumer(PRICE).sell(PRICE + profit);
     }
 
 }

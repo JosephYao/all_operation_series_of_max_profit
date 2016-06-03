@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestAccountImmutable {
 
-    Account initial =  new Account(ENOUGH_BALANCE);
+    TestAccountHelper initial =  new TestAccountHelper(ENOUGH_BALANCE);
     private Account afterBuy;
 
     @Test
@@ -40,7 +40,7 @@ public class TestAccountImmutable {
     }
 
     private void afterBuyWith(int price) {
-        afterBuy = initial.buy(price);
+        afterBuy = initial.buyWithoutConsumer(price);
     }
 
 }

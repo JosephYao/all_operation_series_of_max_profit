@@ -38,7 +38,4 @@ public class Account {
         return new Account(balance, profit + soldPrice, 0);
     }
 
-    public Account buy(int price) {
-        return buy(price, account -> {});
-    }
 }
