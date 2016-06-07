@@ -11,7 +11,7 @@ public class Account {
         this(balance, 0, 0);
     }
 
-    public Account(int balance, int profit, int soldPrice) {
+    private Account(int balance, int profit, int soldPrice) {
         this.balance = balance;
         this.profit = profit;
         this.soldPrice = soldPrice;
