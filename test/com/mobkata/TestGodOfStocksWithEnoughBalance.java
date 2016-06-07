@@ -5,16 +5,17 @@ import org.junit.Test;
 import java.util.List;
 
 import static com.mobkata.StockOperation.*;
+import static com.mobkata.account.TestAccountHelper.ENOUGH_BALANCE;
 import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.hasItem;
 
 public class TestGodOfStocksWithEnoughBalance {
 
     private static final int HIGHER_PRICE = 10;
     private static final int LOWER_PRICE = 1;
-    GodOfStocks godOfStocks = new GodOfStocks(0);
+    GodOfStocks godOfStocks = new GodOfStocks(ENOUGH_BALANCE);
 
     @Test
     public void no_operation_needed_when_no_stock_price() {
@@ -127,6 +128,7 @@ public class TestGodOfStocksWithEnoughBalance {
 
     private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
         List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);
+        assertEquals(expected, actual);
         assertEquals(expected.size(), actual.size());
         expected.stream().forEach(
                 series -> assertThat(actual, hasItem(series)));

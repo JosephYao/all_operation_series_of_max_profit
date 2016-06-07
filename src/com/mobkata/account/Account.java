@@ -3,9 +3,9 @@ package com.mobkata.account;
 import java.util.function.Consumer;
 
 public class Account {
-    private int profit;
+    private final int profit;
     private final int soldPrice;
-    private int balance;
+    private final int balance;
 
     public Account(int balance) {
         this(balance, 0, 0);
@@ -35,7 +35,7 @@ public class Account {
     }
 
     public Account pass() {
-        return new Account(balance, profit + soldPrice, 0);
+        return new Account(balance + soldPrice, profit + soldPrice, 0);
     }
 
     public int balance() {

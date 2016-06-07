@@ -4,7 +4,6 @@ import com.mobkata.account.Account;
 
 import java.util.List;
 
-import static java.lang.Integer.MAX_VALUE;
 import static java.util.Collections.emptyList;
 
 public abstract class StockOperationSeries {
@@ -20,7 +19,7 @@ public abstract class StockOperationSeries {
     }
 
     public static List<StockOperationSeries> allStockOperationSeries(List<Integer> prices) {
-        return new CanPassAndBuyStockOperationSeries(prices, emptyList(), new Account(MAX_VALUE)).towardsCompleteSeries();
+        return new CanPassAndBuyStockOperationSeries(prices, emptyList(), new Account(100)).towardsCompleteSeries();
     }
 
     protected Integer priceOfNextOperation() {
