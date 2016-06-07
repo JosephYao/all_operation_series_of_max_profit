@@ -19,7 +19,7 @@ public class Account {
 
     public Account buy(int price, Consumer<Account> consumer) {
         if (price <= balance) {
-            Account account = new Account(balance, profit - price, 0);
+            Account account = new Account(balance - price, profit - price, 0);
             consumer.accept(account);
             return account;
         }
@@ -38,4 +38,7 @@ public class Account {
         return new Account(balance, profit + soldPrice, 0);
     }
 
+    public int balance() {
+        return balance;
+    }
 }
