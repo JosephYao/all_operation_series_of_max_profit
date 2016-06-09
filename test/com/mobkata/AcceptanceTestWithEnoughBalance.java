@@ -11,7 +11,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-public class TestGodOfStocksWithEnoughBalance {
+public class AcceptanceTestWithEnoughBalance {
 
     private static final int HIGHER_PRICE = 10;
     private static final int LOWER_PRICE = 1;

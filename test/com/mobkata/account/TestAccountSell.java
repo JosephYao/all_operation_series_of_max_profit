@@ -2,6 +2,7 @@ package com.mobkata.account;
 
 import org.junit.Test;
 
+import static com.mobkata.account.TestAccountHelper.*;
 import static com.mobkata.account.TestAccountHelper.ENOUGH_BALANCE;
 import static org.junit.Assert.assertEquals;
 
@@ -12,8 +13,8 @@ public class TestAccountSell {
         TestAccountHelper account = new TestAccountHelper(ENOUGH_BALANCE);
 
         Account accountAfterSell = account
-                .buyWithoutConsumer(TestAccountHelper.PRICE)
-                .sell(TestAccountHelper.PRICE + 1)
+                .buyWithoutConsumer(PRICE)
+                .sell(PRICE + 1)
                 .pass();
 
         assertEquals(ENOUGH_BALANCE + 1, accountAfterSell.balance());
