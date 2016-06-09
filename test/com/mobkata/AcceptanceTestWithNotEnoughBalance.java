@@ -27,4 +27,11 @@ public class AcceptanceTestWithNotEnoughBalance {
                 asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE)));
     }
 
+    @Test
+    public void max_profit_is_0_when_no_extra_day_to_get_back_the_sell_profit() {
+        assertEquals(0, godOfStocks.maxProfit(
+                asList(LOWER_PRICE, HIGHER_PRICE)
+        ));
+    }
+
 }
