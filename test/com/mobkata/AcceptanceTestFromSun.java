@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static com.mobkata.StockOperation.*;
+import static com.mobkata.account.TestAccountHelper.ENOUGH_BALANCE;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertEquals;
@@ -12,7 +13,7 @@ import static org.junit.Assert.assertThat;
 
 public class AcceptanceTestFromSun {
 
-    GodOfStocks godOfStocks = new GodOfStocks(0);
+    GodOfStocks godOfStocks = new GodOfStocks(ENOUGH_BALANCE);
 
     @Test
     public void two_transactions() {

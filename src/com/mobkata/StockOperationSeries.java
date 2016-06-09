@@ -18,8 +18,8 @@ public abstract class StockOperationSeries {
         this.account = account;
     }
 
-    public static List<StockOperationSeries> allStockOperationSeries(List<Integer> prices) {
-        return new CanPassAndBuyStockOperationSeries(prices, emptyList(), new Account(100)).towardsCompleteSeries();
+    public static List<StockOperationSeries> allStockOperationSeries(List<Integer> prices, Account account) {
+        return new CanPassAndBuyStockOperationSeries(prices, emptyList(), account).towardsCompleteSeries();
     }
 
     protected Integer priceOfNextOperation() {

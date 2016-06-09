@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static com.mobkata.StockOperation.*;
-import static com.mobkata.account.TestAccountHelper.ENOUGH_BALANCE;
+import static com.mobkata.account.TestAccountHelper.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertEquals;
@@ -13,8 +13,6 @@ import static org.junit.Assert.assertThat;
 
 public class AcceptanceTestWithEnoughBalance {
 
-    private static final int HIGHER_PRICE = 10;
-    private static final int LOWER_PRICE = 1;
     GodOfStocks godOfStocks = new GodOfStocks(ENOUGH_BALANCE);
 
     @Test
