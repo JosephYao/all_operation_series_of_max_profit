@@ -7,9 +7,7 @@ import java.util.List;
 import static com.mobkata.StockOperation.*;
 import static com.mobkata.account.TestAccountHelper.*;
 import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class AcceptanceTestWithEnoughBalance {
 
@@ -19,7 +17,7 @@ public class AcceptanceTestWithEnoughBalance {
     public void no_operation_needed_when_no_stock_price() {
         assertStockOperationEquals(
                 asList(),
-                asList());
+                asList(), godOfStocks);
     }
 
     @Test
@@ -27,7 +25,7 @@ public class AcceptanceTestWithEnoughBalance {
         assertStockOperationEquals(
                 asList(
                         asList(PASS)),
-                asList(LOWER_PRICE));
+                asList(LOWER_PRICE), godOfStocks);
     }
 
     @Test
@@ -35,7 +33,7 @@ public class AcceptanceTestWithEnoughBalance {
         assertStockOperationEquals(
                 asList(
                         asList(PASS, PASS)),
-                asList(HIGHER_PRICE, LOWER_PRICE));
+                asList(HIGHER_PRICE, LOWER_PRICE), godOfStocks);
     }
 
     @Test
@@ -44,7 +42,7 @@ public class AcceptanceTestWithEnoughBalance {
                 asList(
                         asList(PASS, PASS)
                 ),
-                asList(LOWER_PRICE, LOWER_PRICE)
+                asList(LOWER_PRICE, LOWER_PRICE), godOfStocks
         );
     }
 
@@ -54,7 +52,7 @@ public class AcceptanceTestWithEnoughBalance {
                 asList(
                         asList(BUY, SELL, COOL)
                 ),
-                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE)
+                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE), godOfStocks
         );
     }
     
@@ -64,7 +62,7 @@ public class AcceptanceTestWithEnoughBalance {
                 asList(
                         asList(BUY, SELL, COOL)
                 ),
-                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE)
+                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE), godOfStocks
         );
     }
 
@@ -77,7 +75,7 @@ public class AcceptanceTestWithEnoughBalance {
                 asList(
                         asList(PASS, BUY, SELL, COOL)
                 ),
-                prices);
+                prices, godOfStocks);
     }
 
     @Test
@@ -86,7 +84,7 @@ public class AcceptanceTestWithEnoughBalance {
                 asList(
                         asList(BUY, SELL, COOL, PASS)
                 ),
-                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE, LOWER_PRICE)
+                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE, LOWER_PRICE), godOfStocks
         );
     }
 
@@ -96,7 +94,7 @@ public class AcceptanceTestWithEnoughBalance {
                 asList(
                         asList(BUY, SELL, COOL, BUY, SELL, COOL)
                 ),
-                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE, LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE)
+                asList(LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE, LOWER_PRICE, HIGHER_PRICE, LOWER_PRICE), godOfStocks
         );
     }
 
@@ -109,7 +107,7 @@ public class AcceptanceTestWithEnoughBalance {
                 asList(
                         asList(BUY, PASS, SELL, COOL)
                 ),
-                prices);
+                prices, godOfStocks);
     }
 
     @Test
@@ -121,14 +119,7 @@ public class AcceptanceTestWithEnoughBalance {
                 asList(
                         asList(BUY, PASS, PASS, SELL, COOL)
                 ),
-                prices);
+                prices, godOfStocks);
     }
 
-    private void assertStockOperationEquals(List<List<StockOperation>> expected, List<Integer> prices) {
-        List<List<StockOperation>> actual = godOfStocks.operationsForMaxProfit(prices);
-        assertEquals(expected, actual);
-        assertEquals(expected.size(), actual.size());
-        expected.stream().forEach(
-                series -> assertThat(actual, hasItem(series)));
-    }
 }

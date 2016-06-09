@@ -27,7 +27,7 @@ public class GodOfStocks {
     }
 
     public int maxProfit(List<Integer> prices) {
-        return allStockOperationSeries(prices, new Account(100)).stream().
+        return allStockOperationSeries(prices, new Account(balance)).stream().
                 mapToInt(StockOperationSeries::sum).max().orElse(0);
     }
 }
